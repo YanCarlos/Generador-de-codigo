@@ -1,115 +1,91 @@
 package com.tlf.abstration.entities;
 
 public class Column {
+    
+    private Table table;
+    private String columnName;
+    private String dataType;
+    private String columnSize;
+    private int nullable;
+    private String remarks;
+    private String columnDefault;
+    private String isAutoIncrement;
 
-	private String tableCat;
-	private String tableSchem;
-	private String tableName;
-	private String columnName;
-	private String dataType;
-	private String columnSize;
-	private int nullable;
-	private String remarks;
-	private String columnDefault;
-	private String isAutoIncrement;
+    public Column(Table table, String columnName, String dataType, String columnSize, int nullable, String remarks, String columnDefault, String isAutoIncrement) {
+        this.table = table;
+        this.columnName = columnName;
+        this.dataType = dataType;
+        this.columnSize = columnSize;
+        this.nullable = nullable;
+        this.remarks = remarks;
+        this.columnDefault = columnDefault;
+        this.isAutoIncrement = isAutoIncrement;
+    }
 
-	public Column(){
-		
-	}
+    public Column() {
+    }
 
-	public Column(String tableCat, String tableSchem, String tableName, String columnName, String dataType,
-			String columnSize, int nullable, String remarks, String columnDefault, String isAutoIncrement) {
-		super();
-		this.tableCat = tableCat;
-		this.tableSchem = tableSchem;
-		this.tableName = tableName;
-		this.columnName = columnName;
-		this.dataType = dataType;
-		this.columnSize = columnSize;
-		this.nullable = nullable;
-		this.remarks = remarks;
-		this.columnDefault = columnDefault;
-		this.isAutoIncrement = isAutoIncrement;
-	}
+    public Table getTable() {
+        return table;
+    }
 
-	public String getTableCat() {
-		return tableCat;
-	}
+    public void setTable(Table table) {
+        this.table = table;
+    }
 
-	public void setTableCat(String tableCat) {
-		this.tableCat = tableCat;
-	}
+    public String getColumnName() {
+        return columnName;
+    }
 
-	public String getTableSchem() {
-		return tableSchem;
-	}
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
+    }
 
-	public void setTableSchem(String tableSchem) {
-		this.tableSchem = tableSchem;
-	}
+    public String getDataType() {
+        return dataType;
+    }
 
-	public String getTableName() {
-		return tableName;
-	}
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+    public String getColumnSize() {
+        return columnSize;
+    }
 
-	public String getColumnName() {
-		return columnName;
-	}
+    public void setColumnSize(String columnSize) {
+        this.columnSize = columnSize;
+    }
 
-	public void setColumnName(String columnName) {
-		this.columnName = columnName;
-	}
+    public int getNullable() {
+        return nullable;
+    }
 
-	public String getDataType() {
-		return dataType;
-	}
+    public void setNullable(int nullable) {
+        this.nullable = nullable;
+    }
 
-	public void setDataType(String dataType) {
-		this.dataType = dataType;
-	}
+    public String getRemarks() {
+        return remarks;
+    }
 
-	public String getColumnSize() {
-		return columnSize;
-	}
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
-	public void setColumnSize(String columnSize) {
-		this.columnSize = columnSize;
-	}
+    public String getColumnDefault() {
+        return columnDefault;
+    }
 
-	public int getNullable() {
-		return nullable;
-	}
+    public void setColumnDefault(String columnDefault) {
+        this.columnDefault = columnDefault;
+    }
 
-	public void setNullable(int nullable) {
-		this.nullable = nullable;
-	}
+    public String getIsAutoIncrement() {
+        return isAutoIncrement;
+    }
 
-	public String getRemarks() {
-		return remarks;
-	}
-
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-
-	public String getColumnDefault() {
-		return columnDefault;
-	}
-
-	public void setColumnDefault(String columnDefault) {
-		this.columnDefault = columnDefault;
-	}
-
-	public String getIsAutoIncrement() {
-		return isAutoIncrement;
-	}
-
-	public void setIsAutoIncrement(String isAutoIncrement) {
-		this.isAutoIncrement = isAutoIncrement;
-	}
-	
+    public void setIsAutoIncrement(String isAutoIncrement) {
+        this.isAutoIncrement = isAutoIncrement;
+    }
 }
