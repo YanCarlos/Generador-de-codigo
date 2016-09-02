@@ -8,6 +8,7 @@ package com.tlf.abstration.reflection;
 import com.tlf.abstration.entities.Column;
 import com.tlf.abstration.entities.Connector;
 import com.tlf.abstration.entities.DataBase;
+import com.tlf.abstration.entities.Primary;
 import com.tlf.abstration.entities.Table;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -44,7 +45,7 @@ public class Reflection {
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public static Connection getConnection(Connector conexion) throws
+    public Connection getConnection(Connector conexion) throws
             SQLException, ClassNotFoundException {
         Class.forName(conexion.getDriver());
         return DriverManager.getConnection(conexion.getUrl(),
@@ -59,7 +60,7 @@ public class Reflection {
      * una base de datos.
      * @throws SQLException
      */
-    public static List<DataBase> listarBasesDeDatos(Connection con) throws SQLException {
+    public List<DataBase> listarBasesDeDatos(Connection con) throws SQLException {
         ResultSet rs = con.getMetaData().getCatalogs();
         List<DataBase> dbs = new ArrayList<>();
         while (rs.next()) {
@@ -77,7 +78,7 @@ public class Reflection {
      * @return lista de tablas de una base de datos
      * @throws SQLException
      */
-    public static List<Table> listarTablas(Connection con, DataBase db) throws SQLException {
+    public List<Table> listarTablas(Connection con, DataBase db) throws SQLException {
         DatabaseMetaData dbmd = con.getMetaData();
         ResultSet rs = dbmd.getTables(db.getName(), null, "%", new String[]{"table", "view"});
         List<Table> tables = new ArrayList<>();
@@ -103,7 +104,7 @@ public class Reflection {
      * @return lista de campos e una tabla
      * @throws SQLException
      */
-    public static List<Column> listarColumnas(Connection con, DataBase db, Table table)
+    public List<Column> listarColumnas(Connection con, DataBase db, Table table)
             throws SQLException {
         DatabaseMetaData dbmd = con.getMetaData();
         ResultSet rs = dbmd.getColumns(db.getName(), null, table.getTableName(), "%");
@@ -121,6 +122,28 @@ public class Reflection {
             columns.add(column);
         }
         return columns;
+    }
+    
+    /**
+     * Metodo el cual lista las llaves primarias de una tabla
+     * @param con, conexion con e motor
+     * @param db, nombre de la base de datos
+     * @param table, tabla a la que se le buscaran sus primarias
+     * @return, una lista de llaves primarias segun una tabla
+     * @throws SQLException 
+     */
+    public List<Primary> listarPrimarias(Connection con, DataBase db, Table table) 
+            throws SQLException {
+        DatabaseMetaData dbmd = con.getMetaData();
+        ResultSet rs = dbmd.getPrimaryKeys(db.getName(), null, table.getTableName());
+        List<Primary> primaries = new ArrayList<>();
+        while(rs.next()){
+            Primary primary = new Primary();
+            primary.setTable(table);
+            primary.setColumnName(rs.getString("COLUMN_NAME"));
+            primaries.add(primary);
+        }
+        return primaries;
     }
 
     /*

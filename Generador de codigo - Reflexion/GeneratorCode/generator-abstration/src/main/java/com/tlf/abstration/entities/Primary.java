@@ -10,21 +10,31 @@ package com.tlf.abstration.entities;
  * @author Administrador
  */
 public class Primary {
- 
-    private Column columnName;
+    
+    private Table table;
+    private String columnName;
 
-    public Primary(Column columnName) {
+    public Primary(String columnName,Table table) {
         this.columnName = columnName;
+        this.table = table;
     }
 
     public Primary() {
     }
 
-    public Column getColumnName() {
+    public String getColumnName() {
         return columnName;
     }
 
-    public void setColumnName(Column columnName) {
+    public void setColumnName(String columnName) {
         this.columnName = columnName;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
     }    
 }

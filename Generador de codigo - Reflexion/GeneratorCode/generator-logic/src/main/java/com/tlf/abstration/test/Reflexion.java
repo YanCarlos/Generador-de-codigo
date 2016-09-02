@@ -4,6 +4,7 @@ import com.tlf.abstration.entities.Column;
 import com.tlf.abstration.entities.Connector;
 import com.tlf.abstration.entities.DataBase;
 import com.tlf.abstration.entities.Foreign;
+import com.tlf.abstration.entities.Primary;
 import com.tlf.abstration.entities.Table;
 import com.tlf.abstration.reflection.Reflection;
 import com.tlf.logic.execute.TempleteEntity;
@@ -36,20 +37,24 @@ public class Reflexion {
                 List<DataBase> dbs = ref.listarBasesDeDatos(con);
                 List<Table> tables = new ArrayList<>();
                 List<Column> columns = new ArrayList<>();
+                List<Primary> primaries = new ArrayList<>();
                 for (int i = 0; i < 1; i++) {
-                    System.out.println(dbs.get(i).getName());
                     tables = ref.listarTablas(con, dbs.get(i));
-                    System.out.println(tables.size());
                     List<Column> col = new ArrayList<>();
+                    List<Primary> prs = new ArrayList<>();
                     for (Table table : tables) {
                         col = ref.listarColumnas(con, dbs.get(i), table);
                         for (Column column : col) {
                             columns.add(column);
                         }
+                        prs = ref.listarPrimarias(con, dbs.get(i), table);
+                        for (Primary pr : prs) {
+                            primaries.add(pr);
+                        }
                     }
-                    System.out.println(columns.size());
+                    
                     TempleteEntity en = new TempleteEntity();
-                    en.createEntity(tables, columns);
+                    en.createEntity(tables, columns,primaries);
                 }
             } else {
                 System.out.println("No hay Conexion");

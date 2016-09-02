@@ -10,19 +10,33 @@
     #elseif($type == 91 || $type == 92 || $type == 93)Date
     #end    
 #end
-
+#macro(nullable $type)
+    #if($type == 0)false
+    #elseif($type == 1)true #end
+#end
 #foreach($column in $columns)
 #if($column.dataType == 91 || $column.dataType == 92 || $column.dataType == 93)
 import java.util.Date;
 #end
 #end
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Column;
 
 /**
-*@author Project TLS 2016-2 Ing Software
+*@author Project TLF 2016-2 Ing Software
 */
+@Entity
+@Table(name="$table.tableName")
 public class $table.tableName.substring(0,1).toUpperCase()$table.tableName.substring(1).toLowerCase() {    
     #foreach($column in $columns)
-
+    #foreach($primary in $primaries)
+    #if($primary.columnName == $column.columnName)
+    @Id
+    #end
+    #end
+    @Column(name="$column.columnName",length = $column.columnSize,nullable = #nullable($column.nullable))
     private #dataType($column.dataType) $column.columnName;
     #end
     

@@ -1,19 +1,21 @@
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 
 /**
-*@author Project TLS 2016-2 Ing Software
+*@author Project TLF 2016-2 Ing Software
 */
+@Entity
+@Table(name="estudiantes")
 public class Estudiantes {    
-        
-    @Column
+                @Id
+            @Column(name="ced",length = 10,nullable =     false
+    )
     private     int
      ced;
-        
-    @Column
+                    @Column(name="codigo",length = 19,nullable =     false
+    )
     private     long
      codigo;
         

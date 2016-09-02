@@ -1,16 +1,25 @@
-
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Column;
 
 /**
-*@author Project TLS 2016-2 Ing Software
+*@author Project TLF 2016-2 Ing Software
 */
+@Entity
+@Table(name="personas")
 public class Personas {    
-    
+                @Id
+            @Column(name="cedula",length = 10,nullable =     false
+    )
     private     int
      cedula;
-    
+                    @Column(name="nombre",length = 255,nullable =     false
+    )
     private     String
      nombre;
-    
+                    @Column(name="edad",length = 255,nullable =     false
+    )
     private     String
      edad;
         

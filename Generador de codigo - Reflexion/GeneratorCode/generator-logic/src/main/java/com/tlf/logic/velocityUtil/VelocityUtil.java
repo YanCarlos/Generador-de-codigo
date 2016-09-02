@@ -8,7 +8,6 @@ package com.tlf.logic.velocityUtil;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
