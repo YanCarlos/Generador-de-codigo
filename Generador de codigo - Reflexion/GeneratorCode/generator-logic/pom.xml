@@ -13,4 +13,12 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <name>generator-logic</name>
+    <dependencies>
+        <!-- enlace de dependica con el proyecto de las abstraccion-->
+        <dependency>
+            <groupId>com.tlf</groupId>
+            <artifactId>generator-abstration</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

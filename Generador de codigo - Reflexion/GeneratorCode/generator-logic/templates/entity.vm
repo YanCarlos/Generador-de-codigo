@@ -1,0 +1,55 @@
+#macro( dataType $type)
+    #if($type == 4)int
+    #elseif($type == 12)String
+    #elseif($type == -5)long
+    #elseif($type == -6)boolean
+    #elseif($type == 3 || $type == 8)double
+    #elseif($type == 6)float
+    #elseif($type == 1)char
+    #elseif($type == 2004)byte
+    #elseif($type == 91 || $type == 92 || $type == 93)Date
+    #end    
+#end
+
+#foreach($column in $columns)
+#if($column.dataType == 91 || $column.dataType == 92 || $column.dataType == 93)
+import java.util.Date;
+#end
+#end
+
+/**
+*@author Project TLS 2016-2 Ing Software
+*/
+public class $table.tableName.substring(0,1).toUpperCase()$table.tableName.substring(1).toLowerCase() {    
+    #foreach($column in $columns)
+
+    private #dataType($column.dataType) $column.columnName;
+    #end
+    
+    public $table.tableName.substring(0,1).toUpperCase()$table.tableName.substring(1).toLowerCase()(){
+        super();
+    }
+
+    public $table.tableName.substring(0,1).toUpperCase()$table.tableName.substring(1).toLowerCase()
+    (#foreach($column in $columns)#dataType($column.dataType) $column.columnName#if($foreach.count < $columns.size()),#end#end){
+        super();
+    #foreach($column in $columns)
+
+        this.$column.columnName = $column.columnName;
+    #end
+
+    }
+    #foreach($column in $columns)
+    
+    public #dataType($column.dataType) get$column.columnName.substring(0,1).toUpperCase()$column.columnName.substring(1).toLowerCase()
+    (){
+        return this.$column.columnName;
+    }
+    
+    public void set$column.columnName.substring(0,1).toUpperCase()$column.columnName.substring(1).toLowerCase()
+    (#dataType($column.dataType) $column.columnName){
+        this.$column.columnName = $column.columnName;
+    }
+    #end
+
+}

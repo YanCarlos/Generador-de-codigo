@@ -2,9 +2,22 @@ package com.tlf.abstration.entities;
 
 public class Table {    
     
+    /**
+     * Base de datos a la cual pertenece la Tabla
+     */
     private DataBase dataBase;
+    /**
+     * Nombre de la Tabla en la base de datos
+     */
     private String tableName;
+    /**
+     * Tipo de Tabla en la base de datos
+     * Ejemplos:
+     *          ->Table
+     *          ->View
+     */
     private String tableType;
+    
     private String remarks;
     private String referenceColumnName;
     private String refGeneration;

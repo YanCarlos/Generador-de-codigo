@@ -2,6 +2,9 @@ package com.tlf.abstration.entities;
 
 public class DataBase {
 
+    /**
+     * Nombre de la base de datos dentro del Motor
+     */
     private String name;
 
     public DataBase(String name) {
