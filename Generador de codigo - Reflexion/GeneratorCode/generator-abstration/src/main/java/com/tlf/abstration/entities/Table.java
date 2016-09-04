@@ -1,7 +1,10 @@
 package com.tlf.abstration.entities;
 
-public class Table {    
-    
+import java.util.ArrayList;
+import java.util.List;
+
+public class Table {
+
     /**
      * Base de datos a la cual pertenece la Tabla
      */
@@ -11,27 +14,37 @@ public class Table {
      */
     private String tableName;
     /**
-     * Tipo de Tabla en la base de datos
-     * Ejemplos:
-     *          ->Table
-     *          ->View
+     * Tipo de Tabla en la base de datos Ejemplos: ->Table ->View
      */
     private String tableType;
-    
-    private String remarks;
-    private String referenceColumnName;
-    private String refGeneration;
 
-    public Table(DataBase dataBase, String tableName, String tableType, String remarks, String referenceColumnName, String refGeneration) {
+    /**
+     * Lista de las columna que contiene la tabla
+     */
+    private List<Column> columns;
+
+    /**
+     * Lista las primarias que contiene la tabla
+     */
+    private List<Primary> primaries;
+    /**
+     * lista de foraneas de la tabla
+     */
+    private List<Foreign> foreigns;
+
+    public Table(DataBase dataBase, String tableName, String tableType) {
         this.dataBase = dataBase;
         this.tableName = tableName;
         this.tableType = tableType;
-        this.remarks = remarks;
-        this.referenceColumnName = referenceColumnName;
-        this.refGeneration = refGeneration;
+        this.columns = new ArrayList<>();
+        this.primaries = new ArrayList<>();
+        this.foreigns = new ArrayList<>();
     }
 
     public Table() {
+        this.columns = new ArrayList<>();
+        this.primaries = new ArrayList<>();
+        this.foreigns = new ArrayList<>();
     }
 
     public DataBase getDataBase() {
@@ -58,30 +71,27 @@ public class Table {
         this.tableType = tableType;
     }
 
-    public String getRemarks() {
-        return remarks;
+    public List<Column> getColumns() {
+        return columns;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
+    public void setColumns(List<Column> columns) {
+        this.columns = columns;
     }
 
-    public String getReferenceColumnName() {
-        return referenceColumnName;
+    public List<Primary> getPrimaries() {
+        return primaries;
     }
 
-    public void setReferenceColumnName(String referenceColumnName) {
-        this.referenceColumnName = referenceColumnName;
+    public void setPrimaries(List<Primary> primaries) {
+        this.primaries = primaries;
     }
 
-    public String getRefGeneration() {
-        return refGeneration;
+    public List<Foreign> getForeigns() {
+        return foreigns;
     }
 
-    public void setRefGeneration(String refGeneration) {
-        this.refGeneration = refGeneration;
+    public void setForeigns(List<Foreign> foreigns) {
+        this.foreigns = foreigns;
     }
-    
-    
-    
 }

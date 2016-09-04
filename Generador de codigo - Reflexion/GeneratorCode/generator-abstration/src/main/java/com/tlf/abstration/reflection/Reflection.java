@@ -8,6 +8,7 @@ package com.tlf.abstration.reflection;
 import com.tlf.abstration.entities.Column;
 import com.tlf.abstration.entities.Connector;
 import com.tlf.abstration.entities.DataBase;
+import com.tlf.abstration.entities.Foreign;
 import com.tlf.abstration.entities.Primary;
 import com.tlf.abstration.entities.Table;
 import java.sql.Connection;
@@ -60,7 +61,7 @@ public class Reflection {
      * una base de datos.
      * @throws SQLException
      */
-    public List<DataBase> listarBasesDeDatos(Connection con) throws SQLException {
+    public List<DataBase> listDataBases(Connection con) throws SQLException {
         ResultSet rs = con.getMetaData().getCatalogs();
         List<DataBase> dbs = new ArrayList<>();
         while (rs.next()) {
@@ -78,7 +79,7 @@ public class Reflection {
      * @return lista de tablas de una base de datos
      * @throws SQLException
      */
-    public List<Table> listarTablas(Connection con, DataBase db) throws SQLException {
+    public List<Table> listTables(Connection con, DataBase db) throws SQLException {
         DatabaseMetaData dbmd = con.getMetaData();
         ResultSet rs = dbmd.getTables(db.getName(), null, "%", new String[]{"table", "view"});
         List<Table> tables = new ArrayList<>();
@@ -87,9 +88,6 @@ public class Reflection {
             table.setDataBase(db);
             table.setTableName(rs.getString("TABLE_NAME"));
             table.setTableType(rs.getString("TABLE_TYPE"));
-            table.setRemarks(rs.getString("REMARKS"));
-            table.setReferenceColumnName(rs.getString("SELF_REFERENCING_COL_NAME"));
-            table.setRefGeneration(rs.getString("REF_GENERATION"));
             tables.add(table);
         }
         return tables;
@@ -104,7 +102,7 @@ public class Reflection {
      * @return lista de campos e una tabla
      * @throws SQLException
      */
-    public List<Column> listarColumnas(Connection con, DataBase db, Table table)
+    public List<Column> listColumns(Connection con, DataBase db, Table table)
             throws SQLException {
         DatabaseMetaData dbmd = con.getMetaData();
         ResultSet rs = dbmd.getColumns(db.getName(), null, table.getTableName(), "%");
@@ -132,7 +130,7 @@ public class Reflection {
      * @return, una lista de llaves primarias segun una tabla
      * @throws SQLException 
      */
-    public List<Primary> listarPrimarias(Connection con, DataBase db, Table table) 
+    public List<Primary> listPrimaries(Connection con, DataBase db, Table table) 
             throws SQLException {
         DatabaseMetaData dbmd = con.getMetaData();
         ResultSet rs = dbmd.getPrimaryKeys(db.getName(), null, table.getTableName());
@@ -146,16 +144,27 @@ public class Reflection {
         return primaries;
     }
 
-    /*
-    public static List<Foreign> listarLlavesForaneas(Connection con,DataBase db, Table table) 
+    /**
+     * Metodo el cual lista las llaves foraneas que contien una tabla
+     * 
+     * @param con, conexion con el motor de las bases de datos
+     * @param db, base de dato a la cual nos referenciamos
+     * @param table, tabla de la cual vamos a realizar la lista
+     * @return, una lista de llaaves foranes
+     * @throws SQLException 
+     */
+    public List<Foreign> listForeings(Connection con,DataBase db, Table table) 
             throws SQLException{
         DatabaseMetaData dbmd = con.getMetaData();
         ResultSet rs=dbmd.getImportedKeys(db.getName(), null, table.getTableName());
         List<Foreign> foreigns= new ArrayList<>();
         while(rs.next()){
             Foreign foreign=new Foreign();
-            
+            foreign.setPkTable(rs.getString("PKTABLE_NAME"));
+            foreign.setPkColumnName(rs.getString("PKCOLUMN_NAME"));
+            foreign.setFkColumnName(rs.getString("FKCOLUMN_NAME"));
+            foreigns.add(foreign);
         }
-        return null;
-    }*/
+        return foreigns;
+    }
 }

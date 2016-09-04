@@ -11,7 +11,8 @@ public class Column {
     private String columnDefault;
     private String isAutoIncrement;
 
-    public Column(Table table, String columnName, String dataType, String columnSize, int nullable, String remarks, String columnDefault, String isAutoIncrement) {
+    public Column(Table table, String columnName, String dataType, String columnSize,
+            int nullable, String remarks, String columnDefault, String isAutoIncrement) {
         this.table = table;
         this.columnName = columnName;
         this.dataType = dataType;

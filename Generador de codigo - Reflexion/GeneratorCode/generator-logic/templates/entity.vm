@@ -14,6 +14,9 @@
     #if($type == 0)false
     #elseif($type == 1)true #end
 #end
+#macro(nameType $name)
+    $name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()
+#end
 #foreach($column in $columns)
 #if($column.dataType == 91 || $column.dataType == 92 || $column.dataType == 93)
 import java.util.Date;
@@ -23,7 +26,13 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
-
+#foreach($foreign in $foreigns)
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+#break
+#end
+#set($bolCol = 0)
+#set($nameCol = "")
 /**
 *@author Project TLF 2016-2 Ing Software
 */
@@ -36,10 +45,22 @@ public class $table.tableName.substring(0,1).toUpperCase()$table.tableName.subst
     @Id
     #end
     #end
-    @Column(name="$column.columnName",length = $column.columnSize,nullable = #nullable($column.nullable))
-    private #dataType($column.dataType) $column.columnName;
+    #foreach($foreign in $foreigns)
+    #if($foreign.fkColumnName == $column.columnName)
+    @ManyToOne
+    @JoinColumn(name = "$column.columnName",table = "$foreign.pkTable" ,referencedColumnName = "$foreign.pkColumnName")
+    #set($bolCol = 1)
+    #set($nameCol = $foreign.pkTable)
     #end
-    
+    #end
+    #if($bolCol == 0)
+    @Column(name="$column.columnName",length = $column.columnSize,nullable = #nullable($column.nullable))
+    #end
+    private #if($nameCol != "")#nameType($nameCol)#else#dataType($column.dataType)#end $column.columnName;
+    #set($bolCol = 0)
+    #set($nameCol = "")
+    #end
+
     public $table.tableName.substring(0,1).toUpperCase()$table.tableName.substring(1).toLowerCase()(){
         super();
     }
@@ -65,5 +86,4 @@ public class $table.tableName.substring(0,1).toUpperCase()$table.tableName.subst
         this.$column.columnName = $column.columnName;
     }
     #end
-
 }

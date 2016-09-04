@@ -10,51 +10,41 @@ package com.tlf.abstration.entities;
  * @author Administrador
  */
 public class Foreign {
-    
-    private Column pkColumnName;
-    private Column fkColumnName;
-    private String fkName;
-    private String pkName;
+
+    private String pkTable;
+    private String pkColumnName;
+    private String fkColumnName;
 
     public Foreign() {
     }
 
-    public Foreign(Column pkColumnName, Column fkColumnName, String fkName, String pkName) {
+    public Foreign(String pkTable, String pkColumnName, String fkColumnName) {
+        this.pkTable = pkTable;
         this.pkColumnName = pkColumnName;
         this.fkColumnName = fkColumnName;
-        this.fkName = fkName;
-        this.pkName = pkName;
     }
 
-    public Column getPkColumnName() {
+    public String getPkTable() {
+        return pkTable;
+    }
+
+    public void setPkTable(String pkTable) {
+        this.pkTable = pkTable;
+    }
+
+    public String getPkColumnName() {
         return pkColumnName;
     }
 
-    public void setPkColumnName(Column pkColumnName) {
+    public void setPkColumnName(String pkColumnName) {
         this.pkColumnName = pkColumnName;
     }
 
-    public Column getFkColumnName() {
+    public String getFkColumnName() {
         return fkColumnName;
     }
 
-    public void setFkColumnName(Column fkColumnName) {
+    public void setFkColumnName(String fkColumnName) {
         this.fkColumnName = fkColumnName;
     }
-
-    public String getFkName() {
-        return fkName;
-    }
-
-    public void setFkName(String fkName) {
-        this.fkName = fkName;
-    }
-
-    public String getPkName() {
-        return pkName;
-    }
-
-    public void setPkName(String pkName) {
-        this.pkName = pkName;
-    } 
 }

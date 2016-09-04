@@ -34,27 +34,18 @@ public class Reflexion {
             Connection con = ref.getConnection(conexion);
 
             if (con != null) {
-                List<DataBase> dbs = ref.listarBasesDeDatos(con);
+                List<DataBase> dbs = ref.listDataBases(con);
                 List<Table> tables = new ArrayList<>();
-                List<Column> columns = new ArrayList<>();
-                List<Primary> primaries = new ArrayList<>();
                 for (int i = 0; i < 1; i++) {
-                    tables = ref.listarTablas(con, dbs.get(i));
-                    List<Column> col = new ArrayList<>();
-                    List<Primary> prs = new ArrayList<>();
+                    tables = ref.listTables(con, dbs.get(i));
                     for (Table table : tables) {
-                        col = ref.listarColumnas(con, dbs.get(i), table);
-                        for (Column column : col) {
-                            columns.add(column);
-                        }
-                        prs = ref.listarPrimarias(con, dbs.get(i), table);
-                        for (Primary pr : prs) {
-                            primaries.add(pr);
-                        }
-                    }
-                    
+                        table.setColumns(ref.listColumns(con, dbs.get(i), table));
+                        table.setPrimaries(ref.listPrimaries(con, dbs.get(i), table));
+                        table.setForeigns(ref.listForeings(con, dbs.get(i), table));
+                        System.out.println(table.getForeigns().size());
+                    }                    
                     TempleteEntity en = new TempleteEntity();
-                    en.createEntity(tables, columns,primaries);
+                    en.createEntity(tables);
                 }
             } else {
                 System.out.println("No hay Conexion");

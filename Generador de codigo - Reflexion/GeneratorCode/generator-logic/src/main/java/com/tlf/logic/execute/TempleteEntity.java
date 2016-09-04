@@ -32,30 +32,19 @@ public class TempleteEntity {
         this.util = new VelocityUtil();
     }
 
-    public void createEntity(List<Table> tables, List<Column> columns,List<Primary> primaries)
+    public void createEntity(List<Table> tables)
             throws FileNotFoundException {
         Map<String, Object> map = new HashMap<>();
         PrintStream salidatxt = null;
         for (Table table : tables) {
-            List<Column> auxColumns = new ArrayList<>();
-            List<Primary> auxPrimaries = new ArrayList<>();
-            for (Column column : columns) {
-                if (column.getTable() == table) {
-                    auxColumns.add(column);
-                }
-            }
-            for (Primary primary : primaries) {
-                if (primary.getTable() == table) {
-                    auxPrimaries.add(primary);
-                }
-            }
             try {
                 map.put("table", table);
-                map.put("columns", auxColumns);
-                map.put("primaries", auxPrimaries);
+                map.put("columns", table.getColumns());
+                map.put("primaries", table.getPrimaries());
+                map.put("foreigns", table.getForeigns());
                 StringWriter writer = this.util.
                         executeTemplate("entity.vm", map, "templates");
-                salidatxt = new PrintStream("test/"+table.getTableName() + ".java");
+                salidatxt = new PrintStream("test/" + table.getTableName() + ".java");
                 salidatxt.println(writer.toString());
                 System.out.println(writer.toString());
                 //quitar el syso
@@ -64,6 +53,10 @@ public class TempleteEntity {
                 salidatxt.close();
             }
         }
+    }
+    
+    public void createDao(List<Table> table){
+    
     }
 
 }
