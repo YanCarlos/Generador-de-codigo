@@ -5,8 +5,6 @@
  */
 package com.tlf.logic.velocityUtil;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.io.StringWriter;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -49,42 +47,7 @@ public class VelocityUtil {
     public VelocityUtil(String rutaBase) {
         this.rutaBase = rutaBase;
     }
-
-    /**
-     *
-     * Metodo para generar texto de una plantilla.
-     *
-     * @author Camilo Andres Ferrer Bustos <caferrerb@eam.edu.co>
-     * @date 1/11/2015
-     * @param rutaPlantilla
-     * @param parametros
-     * @return la cadena generada de la plantilla.
-     */
-    public String cargarPlantilla(String rutaPlantilla, Map<String, Object> parametros) {
-        /* first, get and initialize an engine */
-
-        String rutaBase = "plantillas";
-
-        StringWriter writer = executeTemplate(rutaPlantilla, parametros, rutaBase);
-
-        return writer.toString();
-    }
-
-    /**
-     * Metodo para escribir el resultado de una plantilla en un archivo.
-     *
-     * @param rutaPlantilla, ruta de l aplnatilla de velocity
-     * @param parametros, parametros de la plantilla
-     * @param rutaSalida, ruta del archivo de salida.
-     * @throws FileNotFoundException
-     */
-    public void generarArtefacto(String rutaPlantilla, Map<String, Object> parametros, String rutaSalida)
-            throws FileNotFoundException {
-        try (PrintStream salida = new PrintStream(rutaSalida)) {
-            salida.print(cargarPlantilla(rutaPlantilla, parametros));
-        }
-    }
-
+    
     /**
      * Metodo para ejecutar la plantilla.
      *

@@ -24,7 +24,14 @@ public class Connector {
      * controlador Java para la conexion con el Motor
      */
     private String driver;
+    /**
+     * Nombre de la base de datos con la cual se establece conexion
+     */
+    private String dataBase;
 
+    public Connector() {
+    }
+    
     public Connector(String user, String password, String url, String driver) {
         super();
         this.user = user;
@@ -65,4 +72,11 @@ public class Connector {
         this.driver = driver;
     }
 
+    public String getDataBase() {
+        return dataBase;
+    }
+
+    public void setDataBase(String dataBase) {
+        this.dataBase = dataBase;
+    }
 }

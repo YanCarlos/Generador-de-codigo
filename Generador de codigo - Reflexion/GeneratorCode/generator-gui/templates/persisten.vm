@@ -1,0 +1,18 @@
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="persistence" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    #foreach($table in $tables)
+    <class>com.entity.#nameType($table.tableName)</class>
+    #end
+  
+    <properties>
+        <property name="javax.persistence.jdbc.url" value="$conn.url/$conn.dataBase"/>
+        <property name="javax.persistence.jdbc.user" value="$conn.user"/>
+        <property name="javax.persistence.jdbc.driver" value="$conn.driver"/>
+        <property name="javax.persistence.jdbc.password" value="$conn.password"/>
+        <property name="eclipselink.ddl-generation" value="none"/>
+    </properties>
+  </persistence-unit>
+</persistence>

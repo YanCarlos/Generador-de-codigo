@@ -21,6 +21,6 @@ public class DataBase {
 
     @Override
     public String toString() {
-        return getName();
+        return getName()+"";
     }
 }

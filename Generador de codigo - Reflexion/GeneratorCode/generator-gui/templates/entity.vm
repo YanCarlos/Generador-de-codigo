@@ -11,6 +11,7 @@
         #if($type == 4)int
         #elseif($type == 12)String
         #elseif($type == -5)long
+        #elseif($type == 5)short
         #elseif($type == -6)boolean
         #elseif($type == 3 || $type == 8)double
         #elseif($type == 6)float

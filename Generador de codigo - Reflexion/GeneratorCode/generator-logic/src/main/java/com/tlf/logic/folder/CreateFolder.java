@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Clase la cual se encargara de crear los directorios de los proyectos
  *
  * @author Crisitan Camilo Zapata Torres
  * @version 1.0.0
@@ -31,17 +32,17 @@ public class CreateFolder {
         super();
         this.util = util;
         this.path = path;
-    }   
-    
+    }
+
     /**
-     * Metodo el cual crea el paquete o proyecto principal Maven para
-     * el proyect WEB Java
-     * 
+     * Metodo el cual crea el paquete o proyecto principal Maven para el proyect
+     * WEB Java
+     *
      * @param name, es el nombre que llevara la carpeta o proyeto global
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
     public void createFolderPrincipalJSF(String name) throws FileNotFoundException {
-        createFolder(path+"/"+name);
+        createFolder(path + "/" + name);
         Map<String, Object> map = new HashMap<>();
         PrintStream salidatxt = null;
         List<String> modules = new ArrayList<>();
@@ -54,7 +55,7 @@ public class CreateFolder {
             map.put("modules", modules);
             StringWriter writer = this.util.
                     executeTemplate("pomPpal.vm", map, "templates");
-            salidatxt = new PrintStream(path+"/"+name + "/pom.xml");
+            salidatxt = new PrintStream(path + "/" + name + "/pom.xml");
             salidatxt.println(writer.toString());
             map.clear();
         } finally {
@@ -66,18 +67,19 @@ public class CreateFolder {
             auxMod.add(module);
         }
     }
-    
+
     /**
      * Metodo el cual crea los modulos del del proyeto principal java web
-     * 
+     *
      * @param nameModule, nombre del modulo del proyecto
      * @param nameProject, nombre del padre del modulo
-     * @param modules, lista de los modulos del cual depende el que se va a crear
-     * @throws FileNotFoundException 
+     * @param modules, lista de los modulos del cual depende el que se va a
+     * crear
+     * @throws FileNotFoundException
      */
     private void createModuleJSF(String nameModule, String nameProject,
             List<String> modules) throws FileNotFoundException {
-        createFolder(path+"/"+nameProject + "/" + nameModule);
+        createFolder(path + "/" + nameProject + "/" + nameModule);
         Map<String, Object> map = new HashMap<>();
         PrintStream salidatxt = null;
         try {
@@ -88,7 +90,7 @@ public class CreateFolder {
             map.put("modules", modules);
             StringWriter writer = this.util.
                     executeTemplate("pomModule.vm", map, "templates");
-            salidatxt = new PrintStream(path+"/"+nameProject + "/" + nameModule + "/pom.xml");
+            salidatxt = new PrintStream(path + "/" + nameProject + "/" + nameModule + "/pom.xml");
             salidatxt.println(writer.toString());
             map.clear();
         } finally {
@@ -96,24 +98,33 @@ public class CreateFolder {
         }
         createFolderInternal(nameModule, nameProject);
     }
-    
-    private void createFolderInternal(String nameModule,String nameProject){
-        String path = nameProject+"/"+nameModule;
-        createFolder(this.path+"/"+path+"/src");
-        createFolder(this.path+"/"+path+"/src/main");
-        createFolder(this.path+"/"+path+"/src/main/java");
-        createFolder(this.path+"/"+path+"/src/main/java/com");
-        if(nameModule.equals(Constant.jpa.toString())){
-            createFolder(this.path+"/"+path+"/src/main/java/com/entity");
-            createFolder(this.path+"/"+path+"/src/main/java/com/DAO");
+
+    /**
+     * Metodo el cual crea los directorios internos de los subproyectos o mudlos
+     *
+     * @param nameModule, nombre del modulo
+     * @param nameProject, nombre del proyecto padre
+     */
+    private void createFolderInternal(String nameModule, String nameProject) {
+        String pathLocal = nameProject + "/" + nameModule;
+        createFolder(this.path + "/" + pathLocal + "/src");
+        createFolder(this.path + "/" + pathLocal + "/src/main");
+        createFolder(this.path + "/" + pathLocal + "/src/main/java");
+        createFolder(this.path + "/" + pathLocal + "/src/main/java/com");
+        if (nameModule.equals(Constant.jpa.toString())) {
+            createFolder(this.path + "/" + pathLocal + "/src/main/resources");
+            createFolder(this.path + "/" + pathLocal + "/src/main/resources/META-INF");
+            createFolder(this.path + "/" + pathLocal + "/src/main/java/com/entity");
+            createFolder(this.path + "/" + pathLocal + "/src/main/java/com/DAO");
         }
     }
-    
+
     /**
      * Metodo que crea directorios
-     * @param name 
+     *
+     * @param name
      */
-    private void createFolder(String name){
+    private void createFolder(String name) {
         File file = new File(name);
         file.mkdir();
     }
