@@ -1,27 +1,41 @@
-#macro( dataType $type)
-    #if($type == 4)int
-    #elseif($type == 12)String
-    #elseif($type == -5)long
-    #elseif($type == -6)boolean
-    #elseif($type == 3 || $type == 8)double
-    #elseif($type == 6)float
-    #elseif($type == 1)char
-    #elseif($type == 2004)byte
-    #elseif($type == 91 || $type == 92 || $type == 93)Date
-    #end    
+#set($varCol = 0)
+#macro( dataType $type $var)
+    #foreach($foreign in $foreigns)
+        #if($foreign.fkColumnName == $var)
+        #nameType($foreign.pkTable)
+        #set($varCol = 1)
+        #break
+        #end
+    #end
+    #if($varCol == 0)
+        #if($type == 4)int
+        #elseif($type == 12)String
+        #elseif($type == -5)long
+        #elseif($type == -6)boolean
+        #elseif($type == 3 || $type == 8)double
+        #elseif($type == 6)float
+        #elseif($type == 1)char
+        #elseif($type == 2004)byte
+        #elseif($type == 91 || $type == 92 || $type == 93)Date
+        #end 
+    #end
+    #set($varCol = 0)
 #end
 #macro(nullable $type)
     #if($type == 0)false
     #elseif($type == 1)true #end
 #end
-#macro(nameType $name)
-    $name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()
-#end
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+
+package $pack;
+
 #foreach($column in $columns)
 #if($column.dataType == 91 || $column.dataType == 92 || $column.dataType == 93)
 import java.util.Date;
+#break
 #end
 #end
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -38,7 +52,7 @@ import javax.persistence.JoinColumn;
 */
 @Entity
 @Table(name="$table.tableName")
-public class $table.tableName.substring(0,1).toUpperCase()$table.tableName.substring(1).toLowerCase() {    
+public class #nameType($table.tableName) implements Serializable{    
     #foreach($column in $columns)
     #foreach($primary in $primaries)
     #if($primary.columnName == $column.columnName)
@@ -50,23 +64,23 @@ public class $table.tableName.substring(0,1).toUpperCase()$table.tableName.subst
     @ManyToOne
     @JoinColumn(name = "$column.columnName",table = "$foreign.pkTable" ,referencedColumnName = "$foreign.pkColumnName")
     #set($bolCol = 1)
-    #set($nameCol = $foreign.pkTable)
+    #break
     #end
     #end
     #if($bolCol == 0)
     @Column(name="$column.columnName",length = $column.columnSize,nullable = #nullable($column.nullable))
     #end
-    private #if($nameCol != "")#nameType($nameCol)#else#dataType($column.dataType)#end $column.columnName;
+    private #dataType($column.dataType $column.columnName) $column.columnName;
+    
     #set($bolCol = 0)
-    #set($nameCol = "")
     #end
 
-    public $table.tableName.substring(0,1).toUpperCase()$table.tableName.substring(1).toLowerCase()(){
+    public #nameType($table.tableName)(){
         super();
     }
 
-    public $table.tableName.substring(0,1).toUpperCase()$table.tableName.substring(1).toLowerCase()
-    (#foreach($column in $columns)#dataType($column.dataType) $column.columnName#if($foreach.count < $columns.size()),#end#end){
+    public #nameType($table.tableName)
+    (#foreach($column in $columns)#dataType($column.dataType $column.columnName) $column.columnName#if($foreach.count < $columns.size()),#end#end){
         super();
     #foreach($column in $columns)
 
@@ -76,13 +90,12 @@ public class $table.tableName.substring(0,1).toUpperCase()$table.tableName.subst
     }
     #foreach($column in $columns)
     
-    public #dataType($column.dataType) get$column.columnName.substring(0,1).toUpperCase()$column.columnName.substring(1).toLowerCase()
-    (){
+    public #dataType($column.dataType $column.columnName) get#nameType($column.columnName)(){
         return this.$column.columnName;
     }
     
-    public void set$column.columnName.substring(0,1).toUpperCase()$column.columnName.substring(1).toLowerCase()
-    (#dataType($column.dataType) $column.columnName){
+    public void set#nameType($column.columnName)
+    (#dataType($column.dataType $column.columnName) $column.columnName){
         this.$column.columnName = $column.columnName;
     }
     #end

@@ -1,19 +1,15 @@
 package com.tlf.abstration.test;
 
-import com.tlf.abstration.entities.Column;
 import com.tlf.abstration.entities.Connector;
 import com.tlf.abstration.entities.DataBase;
-import com.tlf.abstration.entities.Foreign;
-import com.tlf.abstration.entities.Primary;
 import com.tlf.abstration.entities.Table;
 import com.tlf.abstration.reflection.Reflection;
-import com.tlf.logic.execute.TempleteEntity;
-import java.io.FileNotFoundException;
-import java.sql.*;
-import java.util.ArrayList;
+import com.tlf.logic.constant.Constant;
+import com.tlf.logic.execute.TempleteJPA;
+import com.tlf.logic.folder.CreateFolder;
+import com.tlf.logic.velocityUtil.VelocityUtil;
+import java.sql.Connection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Reflexion {
 
@@ -22,41 +18,29 @@ public class Reflexion {
     }
 
     public Reflexion() {
-        String driver = "com.mysql.jdbc.Driver";
-        String user = "root";
-        String url = "jdbc:mysql://localhost:3306";
-        String password = "root";
-
-        Connector conexion = new Connector(user, password, url, driver);
-
         try {
+            String path = "C:\\Users\\Administrador\\Desktop\\Proyecto Generados";
+            Connector con = new Connector("root", "root",
+                    "jdbc:mysql://localhost:3306", "com.mysql.jdbc.Driver");
             Reflection ref = new Reflection();
-            Connection con = ref.getConnection(conexion);
-
-            if (con != null) {
-                List<DataBase> dbs = ref.listDataBases(con);
-                List<Table> tables = new ArrayList<>();
-                for (int i = 0; i < 1; i++) {
-                    tables = ref.listTables(con, dbs.get(i));
-                    for (Table table : tables) {
-                        table.setColumns(ref.listColumns(con, dbs.get(i), table));
-                        table.setPrimaries(ref.listPrimaries(con, dbs.get(i), table));
-                        table.setForeigns(ref.listForeings(con, dbs.get(i), table));
-                        System.out.println(table.getForeigns().size());
-                    }                    
-                    TempleteEntity en = new TempleteEntity();
-                    en.createEntity(tables);
-                }
-            } else {
-                System.out.println("No hay Conexion");
-            }
-        } catch (ClassNotFoundException e) {
+            Connection conn = ref.getConnection(con);
+            List<DataBase> dbs = ref.listDataBases(conn);
+            DataBase bd = dbs.get(0);
+            List<Table> tables = ref.listTables(conn, bd);
+            for (Table table : tables) {
+                table.setColumns(ref.listColumns(conn, bd, table));
+                table.setPrimaries(ref.listPrimaries(conn, bd, table));
+                table.setForeigns(ref.listForeings(conn, bd, table));
+            }            
+            VelocityUtil vUtil = new VelocityUtil();
+            CreateFolder cf = new CreateFolder(vUtil, path);
+            cf.createFolderPrincipalJSF(bd.getName());
+            TempleteJPA tJPA = new TempleteJPA(vUtil, path);
+            tJPA.createDao(Constant.jpa.toString(), bd.getName());
+            tJPA.createEntity(tables, Constant.jpa.toString(), bd.getName());
+            
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } 
-        catch (FileNotFoundException ex) {
-            Logger.getLogger(Reflexion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
