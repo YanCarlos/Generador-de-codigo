@@ -10,6 +10,7 @@ import com.tlf.abstration.entities.DataBase;
 import com.tlf.abstration.entities.Table;
 import com.tlf.abstration.reflection.Reflection;
 import com.tlf.logic.constant.Constant;
+import com.tlf.logic.execute.TempleteEJB;
 import com.tlf.logic.execute.TempleteJPA;
 import com.tlf.logic.folder.CreateFolder;
 import com.tlf.logic.velocityUtil.VelocityUtil;
@@ -18,8 +19,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -84,6 +83,11 @@ public class Controller {
             tJPA.createDao(Constant.jpa.toString(), bd.getName());
             tJPA.createEntity(tables, Constant.jpa.toString(), bd.getName());
             tJPA.createPersisten(this.conn, tables, Constant.jpa.toString(), bd.getName());
+            /*
+            Creamos los archivs con respecto a los EJB
+            */
+            TempleteEJB tEJB = new TempleteEJB(this.util,path);
+            tEJB.createEJBGeneric(Constant.ejb.toString(), bd.getName());
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (FileNotFoundException ex) {

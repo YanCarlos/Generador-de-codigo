@@ -117,6 +117,11 @@ public class CreateFolder {
             createFolder(this.path + "/" + pathLocal + "/src/main/java/com/entity");
             createFolder(this.path + "/" + pathLocal + "/src/main/java/com/DAO");
         }
+        if (nameModule.equals(Constant.ejb.toString())) {
+            createFolder(this.path + "/" + pathLocal + "/src/main/resources");
+            createFolder(this.path + "/" + pathLocal + "/src/main/java/com/util");
+            createFolder(this.path + "/" + pathLocal + "/src/main/java/com/ejb");
+        }
     }
 
     /**

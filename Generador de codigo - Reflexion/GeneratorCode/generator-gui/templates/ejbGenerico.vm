@@ -2,6 +2,7 @@ package $pack;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -33,7 +34,7 @@ public class EJBGenerico<T> implements Serializable {
      * @param entidad
      */
     public void crear(T entidad) {
-            dao.insert(entidad);
+            dao.persistir(entidad);
     }
 
     /**
@@ -44,7 +45,7 @@ public class EJBGenerico<T> implements Serializable {
      * @return, el objeto o null si no existe.
      */
     public T buscar(Object pk) {
-            return  dao.search(getType(), pk);
+            return  dao.encontrarPorId(getType(), pk);
     }
 
     /**
@@ -53,7 +54,7 @@ public class EJBGenerico<T> implements Serializable {
      * @param entidad
      */
     public void eliminar(T entidad) {
-            dao.delete(entidad);
+            dao.eliminar(entidad);
     }
 
     /**
@@ -62,7 +63,7 @@ public class EJBGenerico<T> implements Serializable {
      * @param entidad
      */
     public void editar(T entidad) {
-            dao.update(entidad);
+            dao.actualizar(entidad);
     }
 
     /**

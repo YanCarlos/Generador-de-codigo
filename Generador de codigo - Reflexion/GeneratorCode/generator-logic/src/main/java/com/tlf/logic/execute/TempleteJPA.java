@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * Clase la cual ejecutar y creara los archivos relacionados con el proyecto
- * JAVA
+ * JAVA-JPA
  *
  * @author Crisitan Camilo Zapata Torres
  * @version 1.0.0
