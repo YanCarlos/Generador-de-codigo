@@ -28,27 +28,38 @@
 #end
 #macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
 
+#macro(typeDate $type)
+    #if($type == 91)@Temporal(TemporalType.DATE)
+    #elseif($type == 92)@Temporal(TemporalType.TIME)
+    #elseif($type == 93)@Temporal(TemporalType.TIMESTAMP)
+    #end
+#end
+
 package $pack;
 
+import java.io.Serializable;
 #foreach($column in $columns)
 #if($column.dataType == 91 || $column.dataType == 92 || $column.dataType == 93)
 import java.util.Date;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 #break
 #end
 #end
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
-#foreach($foreign in $foreigns)
+#if(!$foreigns.isEmpty())
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
-#break
 #end
 #set($bolCol = 0)
 #set($nameCol = "")
 /**
+*Clase que representa la tabla de la base de datos con el nombre
+*$table.tableName
+*
 *@author Project TLF 2016-2 Ing Software
 */
 @Entity
@@ -67,6 +78,9 @@ public class #nameType($table.tableName) implements Serializable{
     #set($bolCol = 1)
     #break
     #end
+    #end
+    #if($column.dataType == 91 || $column.dataType == 92 || $column.dataType == 93)
+    #typeDate($column.dataType)
     #end
     #if($bolCol == 0)
     @Column(name="$column.columnName",length = $column.columnSize,nullable = #nullable($column.nullable))
