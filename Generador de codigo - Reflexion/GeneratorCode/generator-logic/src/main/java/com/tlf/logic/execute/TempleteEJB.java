@@ -5,11 +5,14 @@
  */
 package com.tlf.logic.execute;
 
+import com.tlf.abstration.entities.Table;
+import com.tlf.logic.util.Utilitario;
 import com.tlf.logic.velocityUtil.VelocityUtil;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,5 +57,27 @@ public class TempleteEJB {
             salidatxt.close();
         }
     }
+
+    public void createEJB(List<Table> tables, String nameModule, String nameProject)
+            throws FileNotFoundException {
+        Map<String, Object> map = new HashMap<>();
+        PrintStream salidatxt = null;
+        String pack = "com.ejb";
+        for (Table table : tables) {
+            try {
+                map.put("table", table);
+                map.put("pack", pack);
+                StringWriter writer = this.util.
+                        executeTemplate("ejbs.vm", map, "templates");
+                salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
+                        + "/src/main/java/com/ejb/" + Utilitario.
+                                getNameClass(table.getTableName()) + "EJB.java");
+                salidatxt.println(writer.toString());
+                map.clear();
+            } finally {
+                salidatxt.close();
+            }
+        }
+    }   
 
 }
