@@ -1,0 +1,29 @@
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+
+package $pack;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
+import com.util.EJBGenerico;
+
+
+/**
+ * EJB encargado de realizar el CRUD de la entidad
+ * #nameType($table.tableName) partiendo de un EJB 
+ * generico
+ *
+ * @author Project TLF 2016-2 Ing Software
+ *
+ */
+@Stateless
+@LocalBean
+public class #nameType($table.tableName)EJB extends EJBGenerico<#nameType($table.tableName)> {
+
+
+   /*Implemente aqui los metodos especificos de las reglas de negocio de su proyecto */
+
+
+
+
+}
