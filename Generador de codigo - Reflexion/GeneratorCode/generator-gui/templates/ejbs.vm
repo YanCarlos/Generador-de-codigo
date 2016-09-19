@@ -6,7 +6,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import com.util.EJBGenerico;
-
+import com.entity.#nameType($table.tableName);
 
 /**
  * EJB encargado de realizar el CRUD de la entidad

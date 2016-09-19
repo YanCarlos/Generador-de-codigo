@@ -54,6 +54,13 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 #end
+
+#if($primaries.size() > 1)
+import javax.persistence.IdClass;
+
+import com.entity.#nameType($table.tableName)Id;
+#end
+
 #set($bolCol = 0)
 #set($nameCol = "")
 /**
@@ -64,6 +71,9 @@ import javax.persistence.JoinColumn;
 */
 @Entity
 @Table(name="$table.tableName")
+#if($primaries.size() > 1)
+@IdClass(#nameType($table.tableName)Id.class) 
+#end
 public class #nameType($table.tableName) implements Serializable{    
     #foreach($column in $columns)
     #foreach($primary in $primaries)

@@ -5,9 +5,10 @@
  */
 package com.tlf.logic.execute;
 
+import com.tlf.abstration.entities.Column;
 import com.tlf.abstration.entities.Connector;
+import com.tlf.abstration.entities.Primary;
 import com.tlf.abstration.entities.Table;
-import com.tlf.logic.util.Utilitario;
 import com.tlf.logic.velocityUtil.VelocityUtil;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -59,13 +60,35 @@ public class TempleteJPA {
                 StringWriter writer = this.util.
                         executeTemplate("entity.vm", map, "templates");
                 salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
-                        + "/src/main/java/com/entity/" + Utilitario.
-                                getNameClass(table.getTableName()) + ".java");
+                        + "/src/main/java/com/entity/" + getNameClass(table.getTableName()) + ".java");
                 salidatxt.println(writer.toString());
                 map.clear();
+                if(table.getPrimaries().size() > 1){
+                    this.createEntityId(table, nameModule, nameProject);
+                }
             } finally {
                 salidatxt.close();
             }
+        }
+    }
+
+    public void createEntityId(Table table,String nameModule, String nameProject) throws FileNotFoundException {
+        Map<String, Object> map = new HashMap<>();
+        PrintStream salidatxt = null;
+        String pack = "com.entity";
+        try {
+            map.put("table", table);
+            map.put("pack", pack);
+            map.put("columns", table.getColumns());
+            map.put("primaries", table.getPrimaries());
+            StringWriter writer = this.util.
+                    executeTemplate("entityId.vm", map, "templates");
+            salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
+                    + "/src/main/java/com/entity/" + getNameClass(table.getTableName()) + "Id.java");
+            salidatxt.println(writer.toString());
+            map.clear();
+        } finally {
+            salidatxt.close();
         }
     }
 
@@ -121,4 +144,16 @@ public class TempleteJPA {
             salidatxt.close();
         }
     }
+
+    /**
+     * Metodo para nombre correctamente una clase con CamellCase
+     *
+     * @param name, nombre de la clase
+     * @return
+     */
+    public String getNameClass(String name) {
+        String capital = name.charAt(0) + "";
+        return (capital.toUpperCase() + name.substring(1));
+    }
+
 }

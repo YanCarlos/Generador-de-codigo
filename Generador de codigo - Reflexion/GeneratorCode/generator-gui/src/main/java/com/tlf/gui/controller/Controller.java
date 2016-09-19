@@ -88,6 +88,7 @@ public class Controller {
             */
             TempleteEJB tEJB = new TempleteEJB(this.util,path);
             tEJB.createEJBGeneric(Constant.ejb.toString(), bd.getName());
+            tEJB.createEJB(tables, Constant.ejb.toString(), bd.getName());
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (FileNotFoundException ex) {

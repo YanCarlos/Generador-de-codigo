@@ -1,0 +1,68 @@
+#macro( dataType $type $var)
+    #if($type == 4)int
+    #elseif($type == 12)String
+    #elseif($type == -5)long
+    #elseif($type == 5)short
+    #elseif($type == -6)boolean
+    #elseif($type == 3 || $type == 8)double
+    #elseif($type == 6)float
+    #elseif($type == 1)char
+    #elseif($type == 2004)byte
+    #elseif($type == 91 || $type == 92 || $type == 93)Date
+    #end 
+#end
+
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+
+package $pack;
+
+import java.io.Serializable;
+#foreach($column in $columns)
+#if($column.dataType == 91 || $column.dataType == 92 || $column.dataType == 93)
+import java.util.Date;
+#break
+#end
+#end
+
+public class #nameType($table.tableName)Id implements Serializable{
+        
+    #foreach($primary in $primaries)
+    #foreach($column in $columns)
+       
+    #if($primary.columnName == $column.columnName)
+    private #dataType($column.dataType $column.columnName) $column.columnName;
+    #end
+        
+    #end
+    #end
+
+
+    public #nameType($table.tableName)Id
+    (#foreach($column in $columns)#dataType($column.dataType $column.columnName) $column.columnName#if($foreach.count < $columns.size()),#end#end){
+        super();
+        #foreach($column in $columns)
+        this.$column.columnName = $column.columnName;
+        #end
+    }
+    
+    #foreach($primary in $primaries)
+    #foreach($column in $columns)
+    
+    #if($primary.columnName == $column.columnName)
+    
+    public #dataType($column.dataType $column.columnName) get#nameType($column.columnName)(){
+        return this.$column.columnName;
+    }
+    
+    public void set#nameType($column.columnName)
+    (#dataType($column.dataType $column.columnName) $column.columnName){
+        this.$column.columnName = $column.columnName;
+    }
+
+    #end
+    
+    #end
+    #end
+
+} 
+

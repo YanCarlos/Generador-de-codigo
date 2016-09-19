@@ -1,80 +1,80 @@
 package $pack;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import com.DAO.DAOGenerico;
 
 /**
- * EJB Generico del cual deben heredar todos los EJB.
- * @author Project TLF 2016-2 Ing Software
- *
- * @param <T> tipo del EJB.
- */
-public class EJBGenerico<T> implements Serializable {
-
-    @PersistenceContext
-    private transient EntityManager em;
-
-    protected transient DAOGenerico dao;
-
-    @PostConstruct
-    public void postConstruct() {
-            dao = new DAOGenerico(em);
-    }
+*@author Project TLF 2016-2 Ing Software
+*/
+public class DAOGenerico implements Serializable {
+    
+    /*
+    constante de seralizacion
+    */
+    private static final long serialVersionUID = -3106939302290740868L;
 
     /**
-     * Crea la entidad.
-     *
-     * @param entidad
+     * Entitymanager.
      */
-    public void crear(T entidad) {
-            dao.insert(entidad);
+    private EntityManager entityManager;
+    
+    public DAOGenerico(EntityManager entityManager) {
+        super();
+        this.entityManager = entityManager;
     }
 
+    public DAOGenerico() {
+    }
+    
     /**
-     * Metodo para buscar.
-     *
-     * @param pk
-     *            , llave primaria de la entidad.
-     * @return, el objeto o null si no existe.
+     * Persiste un objeto en la base de datos
+     * @param instancia 
      */
-    public T buscar(Object pk) {
-            return  dao.search(getType(), pk);
-    }
+    public void insert(Object instancia) {
+        entityManager.persist(instancia);
 
+    }
+    
     /**
-     * Metodo para eliminar una entidad.
-     *
-     * @param entidad
+     * Busca un objeto en la base de datos
+     * @param <T>
+     * @param clase, tipo de objeto
+     * @param pk, valor unico de busqueda
+     * @return 
      */
-    public void eliminar(T entidad) {
-            dao.delete(entidad);
+    public <T> T search(Class<T> clase, Object pk) {
+        return entityManager.find(clase, pk);
     }
-
+    
     /**
-     * Metodo para Editar una entidad.
-     *
-     * @param entidad
+     * Metodo el cual elimina un objeto a partir de un identificador
+     * @param <T>
+     * @param clase, tipo de objeto
+     * @param pk, valor de la busqueda
+     * @return 
      */
-    public void editar(T entidad) {
-            dao.update(entidad);
+    public <T extends Object> T delete(Class<T> clase, Object pk) {
+        Object instance = search(clase, pk);
+        delete(instance);
+        return (T) instance;
     }
-
+    
     /**
-     * Utilitario para saber el tipo de EJB que es esta instancia.
-     * @return el class de este EJB:
-     * @throws Exception
+     * Metodo el cual realiza una eliminacion
+     * @param entidad , elemento a eliminar
      */
-    public Class<T> getType()  {
-            ParameterizedType superclass = (ParameterizedType) getClass()
-                            .getGenericSuperclass();
-
-            return (Class<T>) superclass.getActualTypeArguments()[0];
+    public void delete(Object entidad) {
+        entityManager.remove(entidad);
     }
-
+    
+    /**
+     * Metodo el cual realiza un actualizacion de un objeto
+     * @param <T>
+     * @param updatedInstance, objeto a actualizar
+     * @return 
+     */
+    public <T> T update(Object updatedInstance) {
+        T obj = (T) entityManager.merge(updatedInstance);
+        return obj;
+    }
 }

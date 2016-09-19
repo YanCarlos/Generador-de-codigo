@@ -6,7 +6,6 @@
 package com.tlf.logic.execute;
 
 import com.tlf.abstration.entities.Table;
-import com.tlf.logic.util.Utilitario;
 import com.tlf.logic.velocityUtil.VelocityUtil;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -58,6 +57,15 @@ public class TempleteEJB {
         }
     }
 
+    /**
+     * Metodo el cual crea los ejb respecto a las tablas obtenidas de la base de
+     * datos
+     *
+     * @param tables, lista de tablas
+     * @param nameModule, nombre del subproyecto
+     * @param nameProject, nombre del proyecto
+     * @throws FileNotFoundException
+     */
     public void createEJB(List<Table> tables, String nameModule, String nameProject)
             throws FileNotFoundException {
         Map<String, Object> map = new HashMap<>();
@@ -70,14 +78,25 @@ public class TempleteEJB {
                 StringWriter writer = this.util.
                         executeTemplate("ejbs.vm", map, "templates");
                 salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
-                        + "/src/main/java/com/ejb/" + Utilitario.
-                                getNameClass(table.getTableName()) + "EJB.java");
+                        + "/src/main/java/com/ejb/"
+                        + getNameClass(table.getTableName()) + "EJB.java");
                 salidatxt.println(writer.toString());
                 map.clear();
             } finally {
                 salidatxt.close();
             }
         }
-    }   
+    }
+
+    /**
+     * Metodo para nombre correctamente una clase con CamellCase
+     *
+     * @param name, nombre de la clase
+     * @return
+     */
+    public String getNameClass(String name) {
+        String capital = name.charAt(0) + "";
+        return (capital.toUpperCase() + name.substring(1));
+    }
 
 }
