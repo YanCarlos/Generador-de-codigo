@@ -62,7 +62,7 @@ public class Controller {
         return ldb;
     }
 
-    public void generateProject(String path, DataBase bd) {
+    public void generateProject(String driver,String path, DataBase bd) {
         try {
             this.conn.setDataBase(bd.getName());
             List<Table> tables = this.ref.listTables(this.con, bd);
@@ -82,7 +82,7 @@ public class Controller {
             TempleteJPA tJPA = new TempleteJPA(this.util, path);
             tJPA.createDao(Constant.jpa.toString(), bd.getName());
             tJPA.createEntity(tables, Constant.jpa.toString(), bd.getName());
-            tJPA.createPersisten(this.conn, tables, Constant.jpa.toString(), bd.getName());
+            tJPA.createPersisten(driver, Constant.jpa.toString(), bd.getName());
             /*
             Creamos los archivs con respecto a los EJB
             */

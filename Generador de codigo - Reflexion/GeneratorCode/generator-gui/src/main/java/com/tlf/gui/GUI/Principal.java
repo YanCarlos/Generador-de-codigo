@@ -6,12 +6,14 @@
 package com.tlf.gui.GUI;
 
 import com.tlf.abstration.entities.DataBase;
+import com.tlf.logic.properties.ReadProperty;
 import com.tlf.gui.controller.Controller;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -21,7 +23,7 @@ import javax.swing.JOptionPane;
  *
  * @author Crisitan Camilo Zapata Torres
  */
-public class Principal extends javax.swing.JFrame {
+public final class Principal extends javax.swing.JFrame {
 
     private String ruta;
     private Controller controller;
@@ -29,6 +31,8 @@ public class Principal extends javax.swing.JFrame {
     private boolean booleanBtn = true;
     private ImageIcon iconBtnConnection;
     private ImageIcon iconBtnDisconnection;
+    private Map<String,String> mapDriver;
+    private Map<String,String> mapHost = ReadProperty.mapHost;
 
     /**
      * Creates new form Principal
@@ -53,6 +57,7 @@ public class Principal extends javax.swing.JFrame {
         btnGenerate.setEnabled(false);
 
         this.controller = new Controller();
+        completedCombo();
     }
 
     /**
@@ -66,7 +71,6 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtDriver = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtUrl = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -74,6 +78,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         btnConnect = new javax.swing.JButton();
+        cbxDriver = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listDatabases = new javax.swing.JList<>();
@@ -89,14 +94,10 @@ public class Principal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
         jLabel1.setText("Driver:");
 
-        txtDriver.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
-        txtDriver.setText("com.mysql.jdbc.Driver");
-
         jLabel2.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
         jLabel2.setText("Url:");
 
         txtUrl.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
-        txtUrl.setText("jdbc:mysql://localhost:3306");
 
         jLabel3.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
         jLabel3.setText("User:");
@@ -117,6 +118,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        cbxDriver.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
+        cbxDriver.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxDriverItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -128,8 +136,8 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDriver)
-                    .addComponent(txtUrl, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
+                    .addComponent(txtUrl, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                    .addComponent(cbxDriver, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -151,10 +159,10 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtDriver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel3)
                                 .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxDriver, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -219,7 +227,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
         if (this.booleanBtn) {
-            String driver = txtDriver.getText();
+            String nameDriver = cbxDriver.getSelectedItem().toString();
+            String driver = this.mapDriver.get(nameDriver);
+            System.out.println(driver);
             String url = txtUrl.getText();
             String user = txtUser.getText();
             String pass = new String(txtPassword.getPassword());
@@ -246,12 +256,13 @@ public class Principal extends javax.swing.JFrame {
         if (!listDatabases.isSelectionEmpty()) {
             int pos = listDatabases.getSelectedIndex();
             DataBase bd = this.listDbs.get(pos);
+            String driver = cbxDriver.getSelectedItem().toString();
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int response = chooser.showOpenDialog(this);
             if (response == JFileChooser.APPROVE_OPTION) {
                 String path = chooser.getSelectedFile().getAbsolutePath();
-                this.controller.generateProject(path, bd);
+                this.controller.generateProject(driver,path, bd);
                 JOptionPane.showMessageDialog(null, "The application was created in\n"
                         + path);
             }
@@ -259,6 +270,12 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Select a database to generate the application");
         }
     }//GEN-LAST:event_btnGenerateActionPerformed
+
+    private void cbxDriverItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxDriverItemStateChanged
+        String value = cbxDriver.getSelectedItem().toString();
+        String hots = mapHost.get(value);
+        txtUrl.setText(hots);
+    }//GEN-LAST:event_cbxDriverItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -296,6 +313,7 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConnect;
     private javax.swing.JButton btnGenerate;
+    private javax.swing.JComboBox<String> cbxDriver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -304,7 +322,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listDatabases;
-    private javax.swing.JTextField txtDriver;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUrl;
     private javax.swing.JTextField txtUser;
@@ -323,7 +340,7 @@ public class Principal extends javax.swing.JFrame {
      * Metodo para limpiar la interfaz
      */
     private void clearForm() {
-        txtDriver.setText("");
+        cbxDriver.setSelectedIndex(0);
         txtUrl.setText("");
         txtUser.setText("");
         txtPassword.setText("");
@@ -335,7 +352,7 @@ public class Principal extends javax.swing.JFrame {
      * @param bol
      */
     private void enabledForm(boolean bol) {
-        txtDriver.setEnabled(bol);
+        cbxDriver.setEnabled(bol);
         txtPassword.setEnabled(bol);
         txtUrl.setEnabled(bol);
         txtUser.setEnabled(bol);
@@ -350,5 +367,17 @@ public class Principal extends javax.swing.JFrame {
             model.addElement(dataBase);
         }
         listDatabases.setModel(model);
+    }
+    
+    /**
+     * Metodo para diligenciar un comobo box
+     * en base a un mapa
+     */
+    public void completedCombo(){
+        this.mapDriver = ReadProperty.mapDriver;
+        for (Map.Entry<String, String> entry : mapDriver.entrySet()) {
+            String key = entry.getKey();
+            cbxDriver.addItem(key);
+        }
     }
 }

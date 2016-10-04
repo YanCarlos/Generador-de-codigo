@@ -5,10 +5,9 @@
  */
 package com.tlf.logic.execute;
 
-import com.tlf.abstration.entities.Column;
 import com.tlf.abstration.entities.Connector;
-import com.tlf.abstration.entities.Primary;
 import com.tlf.abstration.entities.Table;
+import com.tlf.logic.properties.ReadProperty;
 import com.tlf.logic.velocityUtil.VelocityUtil;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -63,7 +62,7 @@ public class TempleteJPA {
                         + "/src/main/java/com/entity/" + getNameClass(table.getTableName()) + ".java");
                 salidatxt.println(writer.toString());
                 map.clear();
-                if(table.getPrimaries().size() > 1){
+                if (table.getPrimaries().size() > 1) {
                     this.createEntityId(table, nameModule, nameProject);
                 }
             } finally {
@@ -72,7 +71,7 @@ public class TempleteJPA {
         }
     }
 
-    public void createEntityId(Table table,String nameModule, String nameProject) throws FileNotFoundException {
+    public void createEntityId(Table table, String nameModule, String nameProject) throws FileNotFoundException {
         Map<String, Object> map = new HashMap<>();
         PrintStream salidatxt = null;
         String pack = "com.entity";
@@ -121,19 +120,18 @@ public class TempleteJPA {
      * Metodo el cual crea el archivo persisten.xml donde van mapeadas las
      * clases
      *
-     * @param conn, objeto con los parametros de conexion al motor
-     * @param tables, lista de tablas a interpretar como entidades
+     * @param nameDriver
      * @param nameModule,, nombre del subProyecto
      * @param nameProject, nombre del proyecto padre
      * @throws FileNotFoundException
      */
-    public void createPersisten(Connector conn, List<Table> tables, String nameModule, String nameProject)
+    public void createPersisten(String nameDriver, String nameModule, String nameProject)
             throws FileNotFoundException {
         Map<String, Object> map = new HashMap<>();
         PrintStream salidatxt = null;
         try {
-            map.put("tables", tables);
-            map.put("conn", conn);
+            map.put("nameProject", nameProject);
+            map.put("dialect", ReadProperty.mapDialect.get(nameDriver));
             StringWriter writer = this.util.
                     executeTemplate("persisten.vm", map, "templates");
             salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule

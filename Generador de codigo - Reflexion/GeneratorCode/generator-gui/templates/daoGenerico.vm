@@ -1,7 +1,11 @@
 package $pack;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 /**
 *@author Project TLF 2016-2 Ing Software
@@ -76,5 +80,17 @@ public class DAOGenerico implements Serializable {
     public <T> T update(Object updatedInstance) {
         T obj = (T) entityManager.merge(updatedInstance);
         return obj;
+    }
+
+    /**
+    *Metodo para  listar todos los objetos de una clase o entidad
+    *@param clase, clase de la que se desea hacer la lista
+    */
+    public <T> List<T> listarTodos(Class<T> clase) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(clase);
+        criteriaQuery.from(clase);
+        TypedQuery<T> typedQuery = entityManager.createQuery(criteriaQuery);
+        return typedQuery.getResultList();
     }
 }
