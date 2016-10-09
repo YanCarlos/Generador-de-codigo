@@ -4,34 +4,31 @@
     <parent>
         <groupId>com.$nameGroup</groupId>
         <artifactId>$nameId</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>$nameModule</artifactId>
+    <artifactId>${nameGroup}-$nameModule</artifactId>    
+    #if($nameModule == "jpa")
     <packaging>jar</packaging>
+    #end
+    
+    #if($nameModule == "ejb")
+    <packaging>ejb</packaging>
+    #end    
+    
+    #if($nameModule == "web")
+    <packaging>war</packaging>
+    #end    
+    
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    <name>$nameModule</name>
+    <name>${nameGroup}-$nameModule</name>
     
-    #if($cant == 1)
-    <url>http://wildfly.org</url>
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <distribution>repo</distribution>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-        </license>
-    </licenses> 
-    #end
-    
+    #if($cant == 0)
     <dependencies>
-        
-        #if($cant == 0)
-
         <!-- Declare the APIs we depend on and need for compilation. All of them 
         are provided by JBoss WildFly -->
-
         <!-- Import the EJB API, we use provided scope as the API is included in 
         JBoss WildFly -->
         <dependency>
@@ -39,7 +36,6 @@
             <artifactId>jboss-ejb-api_3.2_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <!-- Import the CDI API, we use provided scope as the API is included in 
         JBoss WildFly -->
         <dependency>
@@ -47,7 +43,6 @@
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <!-- Import the JPA API, we use provided scope as the API is included in 
         JBoss WildFly -->
         <dependency>
@@ -55,7 +50,6 @@
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <!-- JSR-303 (Bean Validation) Implementation -->
         <!-- Provides portable constraints such as @Email -->
         <!-- Hibernate Validator is shipped in JBoss WildFly -->
@@ -64,14 +58,12 @@
             <artifactId>hibernate-validator</artifactId>
             <scope>provided</scope>
         </dependency>
-        
         <!-- Test scope dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        
         <!-- Optional, but highly recommended -->
         <!-- Arquillian allows you to test enterprise code such as EJBs and Transactional(JTA) 
         JPA from JUnit/TestNG -->
@@ -106,40 +98,80 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        #end
-        #if($cant == 2)
+
+    </dependencies>    
+    #end
+    
+    #if($cant == 1)
+    <url>http://wildfly.org</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <distribution>repo</distribution>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <!-- Declare the APIs we depend on and need for compilation. All of 
+        them are provided by JBoss WildFly -->
+        <!-- Import the EJB API, we use provided scope as the API is included in JBoss WildFly -->
         <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>jaxrs-api</artifactId>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- Import the CDI API, we use provided scope as the API is included in JBoss WildFly -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
         </dependency>
+        <!-- Import the JPA API, we use provided scope as the API is included in JBoss WildFly -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- JSR-303 (Bean Validation) Implementation -->
+        <!-- Provides portable constraints such as @Email -->
+        <!-- Hibernate Validator is shipped in JBoss WildFly -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-        #end
+        <!-- Test scope dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Optional, but highly recommended -->
+        <!-- Arquillian allows you to test enterprise code such as EJBs and 
+        Transactional(JTA) JPA from JUnit/TestNG -->
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+      
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet</artifactId>
+            <scope>test</scope>               
+        </dependency>
         #foreach($module in $modules)
+        
         <dependency>
             <groupId>com.$nameGroup</groupId>
-            <artifactId>$module</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>${nameGroup}-$module</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         #end
     </dependencies>
-    
-    #if($cant == 1)
+
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
@@ -153,7 +185,7 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <profiles>
         <profile>
             <!-- The default profile skips all tests, though you can tune it 
@@ -206,10 +238,90 @@
                 </dependency>
             </dependencies>
         </profile>
-    </profiles>        
+    </profiles>
     #end
     
     #if($cant == 2)
+    <url>http://wildfly.org</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <distribution>repo</distribution>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <!-- Import the JAX-RS API, we use provided scope as the API is included 
+        in JBoss WildFly -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>jaxrs-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- Import the EJB API, we use provided scope as the API is included in 
+        JBoss WildFly -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Import the CDI API, we use provided scope as the API is included in 
+        JBoss WildFly -->
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Import the JSF API, we use provided scope as the API is included in 
+        JBoss WildFly -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.faces</groupId>
+            <artifactId>jboss-jsf-api_2.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Import the JPA API, we use provided scope as the API is included in 
+        JBoss WildFly -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JSR-303 (Bean Validation) Implementation -->
+        <!-- Provides portable constraints such as @Email -->
+        <!-- Hibernate Validator is shipped in JBoss WildFly -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        #foreach($module in $modules)
+        
+        <dependency>
+            <groupId>com.$nameGroup</groupId>
+            <artifactId>${nameGroup}-$module</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        #end
+    </dependencies>
+
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>

@@ -48,7 +48,8 @@ public class TempleteEJB {
             map.put("pack", pack);
             StringWriter writer = this.util.
                     executeTemplate("ejbGenerico.vm", map, "templates");
-            salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
+            salidatxt = new PrintStream(this.path + "/" + nameProject + "/" 
+                    + nameProject + "-" + nameModule
                     + "/src/main/java/com/util/EJBGenerico.java");
             salidatxt.println(writer.toString());
             map.clear();
@@ -77,7 +78,8 @@ public class TempleteEJB {
                 map.put("pack", pack);
                 StringWriter writer = this.util.
                         executeTemplate("ejbs.vm", map, "templates");
-                salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
+                salidatxt = new PrintStream(this.path + "/" + nameProject + "/" 
+                        + nameProject + "-" + nameModule
                         + "/src/main/java/com/ejb/"
                         + getNameClass(table.getTableName()) + "EJB.java");
                 salidatxt.println(writer.toString());

@@ -5,7 +5,6 @@
  */
 package com.tlf.logic.execute;
 
-import com.tlf.abstration.entities.Connector;
 import com.tlf.abstration.entities.Table;
 import com.tlf.logic.properties.ReadProperty;
 import com.tlf.logic.velocityUtil.VelocityUtil;
@@ -58,7 +57,8 @@ public class TempleteJPA {
                 map.put("foreigns", table.getForeigns());
                 StringWriter writer = this.util.
                         executeTemplate("entity.vm", map, "templates");
-                salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
+                salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
+                        + nameProject + "-" + nameModule
                         + "/src/main/java/com/entity/" + getNameClass(table.getTableName()) + ".java");
                 salidatxt.println(writer.toString());
                 map.clear();
@@ -82,7 +82,8 @@ public class TempleteJPA {
             map.put("primaries", table.getPrimaries());
             StringWriter writer = this.util.
                     executeTemplate("entityId.vm", map, "templates");
-            salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
+            salidatxt = new PrintStream(this.path + "/" + nameProject + "/" 
+                    + nameProject + "-" + nameModule
                     + "/src/main/java/com/entity/" + getNameClass(table.getTableName()) + "Id.java");
             salidatxt.println(writer.toString());
             map.clear();
@@ -107,7 +108,8 @@ public class TempleteJPA {
             map.put("pack", pack);
             StringWriter writer = this.util.
                     executeTemplate("daoGenerico.vm", map, "templates");
-            salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
+            salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
+                    + nameProject + "-" + nameModule
                     + "/src/main/java/com/DAO/DAOGenerico.java");
             salidatxt.println(writer.toString());
             map.clear();
@@ -134,7 +136,8 @@ public class TempleteJPA {
             map.put("dialect", ReadProperty.mapDialect.get(nameDriver));
             StringWriter writer = this.util.
                     executeTemplate("persisten.vm", map, "templates");
-            salidatxt = new PrintStream(this.path + "/" + nameProject + "/" + nameModule
+            salidatxt = new PrintStream(this.path + "/" + nameProject + "/" 
+                    + nameProject + "-" + nameModule
                     + "/src/main/resources/META-INF/persistence.xml");
             salidatxt.println(writer.toString());
             map.clear();

@@ -79,7 +79,7 @@ public class CreateFolder {
      */
     private void createModuleJSF(String nameModule, String nameProject,
             List<String> modules) throws FileNotFoundException {
-        createFolder(path + "/" + nameProject + "/" + nameModule);
+        createFolder(path + "/" + nameProject + "/" + nameProject + "-" + nameModule);
         Map<String, Object> map = new HashMap<>();
         PrintStream salidatxt = null;
         try {
@@ -90,7 +90,8 @@ public class CreateFolder {
             map.put("modules", modules);
             StringWriter writer = this.util.
                     executeTemplate("pomModule.vm", map, "templates");
-            salidatxt = new PrintStream(path + "/" + nameProject + "/" + nameModule + "/pom.xml");
+            salidatxt = new PrintStream(path + "/" + nameProject + "/"
+                    + nameProject + "-" + nameModule + "/pom.xml");
             salidatxt.println(writer.toString());
             map.clear();
         } finally {
@@ -106,7 +107,7 @@ public class CreateFolder {
      * @param nameProject, nombre del proyecto padre
      */
     private void createFolderInternal(String nameModule, String nameProject) {
-        String pathLocal = nameProject + "/" + nameModule;
+        String pathLocal = nameProject + "/" + nameProject + "-" + nameModule;
         createFolder(this.path + "/" + pathLocal + "/src");
         createFolder(this.path + "/" + pathLocal + "/src/main");
         createFolder(this.path + "/" + pathLocal + "/src/main/java");
@@ -121,6 +122,13 @@ public class CreateFolder {
             createFolder(this.path + "/" + pathLocal + "/src/main/resources");
             createFolder(this.path + "/" + pathLocal + "/src/main/java/com/util");
             createFolder(this.path + "/" + pathLocal + "/src/main/java/com/ejb");
+        }
+        if (nameModule.equals(Constant.web.toString())) {
+            createFolder(this.path + "/" + pathLocal + "/src/main/webapp");
+            createFolder(this.path + "/" + pathLocal + "/src/main/webapp/resources");
+            createFolder(this.path + "/" + pathLocal + "/src/main/webapp/META-INF");
+            createFolder(this.path + "/" + pathLocal + "/src/main/webapp/templates");
+            createFolder(this.path + "/" + pathLocal + "/src/main/java/com/beans");
         }
     }
 
