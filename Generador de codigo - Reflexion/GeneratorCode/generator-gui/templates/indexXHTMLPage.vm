@@ -1,0 +1,50 @@
+#set($bolCol = 0)
+
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Gestión - $table.tableName</title>
+</h:head>
+<h:body>
+	<h:form>
+		<h2>Bienvenido a Gestion $table.tableName</h2>
+		<p:panel header="Gestión">
+			<h:panelGrid columns="2">
+				#*asiganamos los valores para crear un nuevo objeto*#    
+			    #foreach($column in $table.columns)
+			    	#foreach($foreign int $table.foreigns)
+			    		#if($column.columnName == $foreign.fkColumnName)
+			    <p:outputLabel value="$column.columnName"/>
+			    <p:selectOneMenu value="#{${table.tableName}Bean.${column.columnName}Atr}" effect="fold"
+					editable="false">
+					<f:selectItems value="#{${table.tableName}Bean.map#nameType($foreign.pkTable)s}"/>
+				</p:selectOneMenu>
+			    		#set($bolCol = 1)
+			    		#break 
+			    		#end
+			    	#end
+			    	#if($bolCol == 0)
+			   	<p:outputLabel value="$column.columnName" />
+				<p:inputText value="#{${table.tableName}Bean.${column.columnName}Atr}" />
+			    	#end
+			    #set($bolCol = 0)
+			    #end
+			</h:panelGrid>
+		</p:panel>
+		<p:panel header="Acciones">
+			<h:panelGrid columns="4">
+				<p:commandButton value="Guardar"/>
+				<p:commandButton value="Buscar" />
+				<p:commandButton value="Editar" />
+				<p:commandButton value="Eliminar" />
+			</h:panelGrid>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

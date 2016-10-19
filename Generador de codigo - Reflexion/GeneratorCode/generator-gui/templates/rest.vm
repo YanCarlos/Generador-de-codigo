@@ -1,0 +1,63 @@
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+package com.services;
+
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.ejb.#nameType($table.tableName)EJB;
+import com.entity.#nameType($table.tableName);
+import com.rest.Identificador;
+
+@Stateless
+@Path("/$table.tableName")
+public class #nameType($table.tableName)Service {
+	
+	@Inject
+	#nameType($table.tableName)EJB ejb;
+	
+	@Path("/crear")
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void crear(#nameType($table.tableName) obj){
+		ejb.insert(obj);
+	}
+	
+	@Path("/buscar")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public #nameType($table.tableName) buscar(Identificador obj){
+		return ejb.search(obj.getPk());
+	}
+	
+	@Path("/modificar")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void editar(#nameType($table.tableName) obj){
+		ejb.update(obj);
+	}
+	
+	@Path("eliminar")
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void eliminar(Identificador obj){
+		#nameType($table.tableName) entidad = ejb.search(obj.getPk());
+		ejb.delete(entidad);
+	}
+	
+	@Path("/listar")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<#nameType($table.tableName)> listar(){
+		return ejb.list();
+	}
+}

@@ -51,12 +51,13 @@ public class DAOGenerico implements Serializable {
     }
     
     /**
-     * Metodo el cual elimina un objeto a partir de un identificador
-     * @param <T>
-     * @param clase, tipo de objeto
-     * @param pk, valor de la busqueda
-     * @return 
-     */
+    * Metodo el cual elimina un objeto a partir de un identificador
+    * @param <T>
+    * @param clase, tipo de objeto
+    * @param pk, valor de la busqueda
+    * @return 
+    */
+    @SuppressWarnings("unchecked")
     public <T extends Object> T delete(Class<T> clase, Object pk) {
         Object instance = search(clase, pk);
         delete(instance);
@@ -72,11 +73,12 @@ public class DAOGenerico implements Serializable {
     }
     
     /**
-     * Metodo el cual realiza un actualizacion de un objeto
-     * @param <T>
-     * @param updatedInstance, objeto a actualizar
-     * @return 
-     */
+    * Metodo el cual realiza un actualizacion de un objeto
+    * @param <T>
+    * @param updatedInstance, objeto a actualizar
+    * @return 
+    */
+    @SuppressWarnings("unchecked")
     public <T> T update(Object updatedInstance) {
         T obj = (T) entityManager.merge(updatedInstance);
         return obj;

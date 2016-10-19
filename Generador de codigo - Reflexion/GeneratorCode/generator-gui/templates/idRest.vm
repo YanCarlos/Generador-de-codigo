@@ -1,0 +1,25 @@
+package com.rest;
+
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Identificador implements Serializable{
+	
+	private Object pk;
+	
+	public Identificador(){
+	
+	}
+	
+	public Identificador(Object pk){
+		this.pk = pk;
+	}
+	
+	public Object getPk(){
+		return this.pk;
+	}
+	
+	public void setPk(Object pk){
+		this.pk = pk;
+	}
+}

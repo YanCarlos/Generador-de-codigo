@@ -19,7 +19,11 @@ import com.entity.#nameType($table.tableName);
 @Stateless
 @LocalBean
 public class #nameType($table.tableName)EJB extends EJBGenerico<#nameType($table.tableName)> {
-
+    
+    /**
+    * 
+    */
+    private static final long serialVersionUID = 1L;
 
    /*Implemente aqui los metodos especificos de las reglas de negocio de su proyecto */
 

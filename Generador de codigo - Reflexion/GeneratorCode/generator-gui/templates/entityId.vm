@@ -24,8 +24,16 @@ import java.util.Date;
 #end
 #end
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class #nameType($table.tableName)Id implements Serializable{
-        
+    
+    /**
+    * 
+    */
+    private static final long serialVersionUID = 1L;
+    
     #foreach($primary in $primaries)
     #foreach($column in $columns)
        
@@ -36,6 +44,9 @@ public class #nameType($table.tableName)Id implements Serializable{
     #end
     #end
 
+    public #nameType($table.tableName)Id(){
+    
+    }
 
     public #nameType($table.tableName)Id
     (#foreach($column in $columns)#dataType($column.dataType $column.columnName) $column.columnName#if($foreach.count < $columns.size()),#end#end){
@@ -63,6 +74,18 @@ public class #nameType($table.tableName)Id implements Serializable{
     
     #end
     #end
+
+    @Override
+    public int hashCode() {
+            // TODO Auto-generated method stub
+            return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+            // TODO Auto-generated method stub
+            return super.equals(obj);
+    }
 
 } 
 

@@ -17,6 +17,11 @@ import com.DAO.DAOGenerico;
  * @param <T> tipo del EJB.
  */
 public class EJBGenerico<T> implements Serializable {
+    
+    /**
+    * 
+    */
+    private static final long serialVersionUID = 1L;
 
     @PersistenceContext
     private transient EntityManager em;
@@ -65,12 +70,21 @@ public class EJBGenerico<T> implements Serializable {
     public void update(T entidad) {
             dao.update(entidad);
     }
+    
+    /**
+    *Metodo para listar todos
+    *
+    */
+    public List<T> list(){
+        return dao.listarTodos(getType());
+    }
 
     /**
-     * Utilitario para saber el tipo de EJB que es esta instancia.
-     * @return el class de este EJB:
-     * @throws Exception
-     */
+    * Utilitario para saber el tipo de EJB que es esta instancia.
+    * @return el class de este EJB:
+    * @throws Exception
+    */
+    @SuppressWarnings("unchecked")
     public Class<T> getType()  {
             ParameterizedType superclass = (ParameterizedType) getClass()
                             .getGenericSuperclass();

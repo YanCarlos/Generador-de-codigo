@@ -1,0 +1,152 @@
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+
+#set($bolCol = 0)
+
+#macro( dataType $type)
+    #if($type == 4)int
+    #elseif($type == 12)String
+    #elseif($type == -5)long
+    #elseif($type == 5)short
+    #elseif($type == -6)boolean
+    #elseif($type == 3 || $type == 8)double
+    #elseif($type == 6)float
+    #elseif($type == 1)char
+    #elseif($type == 2004)byte
+    #elseif($type == 91 || $type == 92 || $type == 93)Date
+    #end 
+#end
+
+package $pack;
+
+#if($table.foreigns.size() > 0)
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+#end
+#foreach($column in $table.columns)
+#if($column.dataType == 91 || $column.dataType == 92 || $column.dataType == 93)
+import java.util.Date;
+#break
+#end
+#end
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
+import com.ejb.#nameType($table.tableName)EJB;
+#if($table.foreigns.size() > 0)
+#foreach($foreign in $table.foreigns)
+import com.ejb.#nameType($foreign.pkTable)EJB;
+#end
+#end
+
+import com.entity.#nameType($table.tableName);
+#if($table.foreigns.size() > 0)
+#foreach($foreign in $table.foreigns)
+import com.entity.#nameType($foreign.pkTable);
+#end
+#end
+
+/**
+*@author Project TLF 2016-2 Ing Software
+*/
+@ManagedBean
+@ViewScoped
+public class #nameType($table.tableName)Bean {
+    
+    /*
+    inyeccion de los ejbs
+    */
+    @EJB
+    #nameType($table.tableName)EJB ${table.tableName}Ejb;
+
+    #if($table.foreigns.size() > 0)
+    #foreach($foreign in $table.foreigns)
+    @EJB
+    #nameType($foreign.pkTable)EJB ${foreign.pkTable}Ejb;
+    
+    #end
+    #end
+    
+    /*
+    Atributos
+    */
+    private #nameType($table.tableName) $table.tableName;
+
+    #*asiganamos los valores para crear un nuevo objeto*#    
+    #foreach($column in $table.columns)
+    	#foreach($foreign int $table.foreigns)
+    		#if($column.columnName == $foreign.fkColumnName)
+   	private String ${column.columnName}Atr; 
+    private List<#nameType($foreign.pkTable)> ${foreign.pkTable}s;
+    private Map<String, String> map#nameType($foreign.pkTable)s = new HashMap<String, String>();
+    		#set($bolCol = 1)
+    		#break 
+    		#end
+    	#end
+    	#if($bolCol == 0)
+   private #dataType($column.dataType) ${column.columnName}Atr; 	
+    	#end
+    #set($bolCol = 0)
+    #end    	
+
+    @PostConstruct
+    public void iniciar(){
+        #if($table.foreigns.size() > 0)
+        #foreach($foreign in $table.foreigns)
+        //inicialiar lista ${foreign.pkTable}s //
+        this.${foreign.pkTable}s = this.${foreign.pkTable}Ejb.list();
+        for(#nameType($foreign.pkTable) obj : ${foreign.pkTable}s ){
+            map#nameType($foreign.pkTable)s.put(obj.toString(), obj.toString());
+        }
+        #end
+        #end
+
+    }
+
+    public #nameType($table.tableName) get#nameType($table.tableName)(){
+        return this.$table.tableName;
+    }
+
+    public void set#nameType($table.tableName)(#nameType($table.tableName) $table.tableName){
+        this.$table.tableName = $table.tableName;
+    }
+    
+    #*asiganamos gets y sets*#    
+    #foreach($column in $table.columns)
+    	#foreach($foreign int $table.foreigns)
+    		#if($column.columnName == $foreign.fkColumnName)
+    public String get#nameType($column.columnName)Atr(){
+    	return this.${column.columnName}Atr;
+    }
+    
+    public void set#nameType($column.columnName)Atr(String obj){
+    	this.${column.columnName}Atr = obj;
+    }
+    
+   	public Map<String, String> getMap#nameType($foreign.pkTable)s(){
+   		return this.map#nameType($foreign.pkTable)s;
+   	}
+   	
+   	public void setMap#nameType($foreign.pkTable)s(Map<String, String> map){
+   		this.map#nameType($foreign.pkTable)s = map;
+   	}
+    		#set($bolCol = 1)
+    		#break 
+    		#end
+    	#end
+    	#if($bolCol == 0)
+   public #dataType($column.dataType) get#nameType($column.columnName)Atr(){
+   		return this.${column.columnName}Atr;
+   }
+   
+   public void set#nameType($column.columnName)Atr(#dataType($column.dataType) obj){
+   		this.${column.columnName}Atr = obj;
+   }
+    	#end
+    #set($bolCol = 0)
+    #end
+            
+}

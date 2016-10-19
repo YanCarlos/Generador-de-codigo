@@ -74,7 +74,13 @@ import com.entity.#nameType($table.tableName)Id;
 #if($primaries.size() > 1)
 @IdClass(#nameType($table.tableName)Id.class) 
 #end
-public class #nameType($table.tableName) implements Serializable{    
+public class #nameType($table.tableName) implements Serializable{
+    
+    /**
+    * 
+    */
+    private static final long serialVersionUID = 1L;
+    
     #foreach($column in $columns)
     #foreach($primary in $primaries)
     #if($primary.columnName == $column.columnName)
@@ -84,7 +90,7 @@ public class #nameType($table.tableName) implements Serializable{
     #foreach($foreign in $foreigns)
     #if($foreign.fkColumnName == $column.columnName)
     @ManyToOne
-    @JoinColumn(name = "$column.columnName",table = "$foreign.pkTable" ,referencedColumnName = "$foreign.pkColumnName")
+    @JoinColumn(name = "$column.columnName")
     #set($bolCol = 1)
     #break
     #end
@@ -124,4 +130,9 @@ public class #nameType($table.tableName) implements Serializable{
         this.$column.columnName = $column.columnName;
     }
     #end
+
+    @Override
+    public String toString() {
+        return #foreach($column in $columns) $column.columnName+" "+ #end"";
+    }
 }

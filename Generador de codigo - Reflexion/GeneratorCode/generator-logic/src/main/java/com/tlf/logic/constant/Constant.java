@@ -11,5 +11,5 @@ package com.tlf.logic.constant;
  */
 public enum Constant {
     
-    jpa, ejb, web;
+    jpa, ejb, web, ear;
 }
