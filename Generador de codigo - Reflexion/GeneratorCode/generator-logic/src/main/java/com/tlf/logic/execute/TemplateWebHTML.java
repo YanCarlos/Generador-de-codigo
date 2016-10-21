@@ -62,6 +62,20 @@ public class TemplateWebHTML {
      */
     public void crearteDependencies(String nameModule, String nameProject)
             throws FileNotFoundException {
+        createBootstrapCssDependency(nameModule, nameProject);
+        createJQueryDependency(nameModule, nameProject);
+        createAngularDependency(nameModule, nameProject);
+        createAngularRouteDependency(nameModule, nameProject);
+    }
+    
+    /**
+     * Método que crea la dependencia a bootstrap css
+     * @param nameModule, nombre del modulo
+     * @param nameProject, nombre de la base de datos
+     * @throws FileNotFoundException 
+     */
+    private void createBootstrapCssDependency(String nameModule, String nameProject)
+            throws FileNotFoundException {
         Map<String, Object> map = new HashMap<>();
         PrintStream salidatxt = null;
         try {
@@ -70,22 +84,66 @@ public class TemplateWebHTML {
             salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
                     + nameProject + "-" + nameModule + "/Resources/css/bootstrap.min.css");
             salidatxt.println(writer.toString());
-
-            writer = this.util.executeTemplate("jquery.vm", map, "templates");
+            map.clear();
+        } finally {
+            salidatxt.close();
+        }
+    }
+    
+    /**
+     * Método que crea la dependencia a jquery
+     * @param nameModule, nombre del modulo
+     * @param nameProject, nombre de la base de datos
+     * @throws FileNotFoundException 
+     */
+    private void createJQueryDependency(String nameModule, String nameProject)
+            throws FileNotFoundException {
+        Map<String, Object> map = new HashMap<>();
+        PrintStream salidatxt = null;
+        try {
+            StringWriter writer = this.util.executeTemplate("jquery.vm", map, "templates");
             salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
                     + nameProject + "-" + nameModule + "/Resources/js/jquery.min.js");
             salidatxt.println(writer.toString());
+            map.clear();
+        } finally {
+            salidatxt.close();
+        }
+    }
 
-//            writer = this.util.executeTemplate("bootstrapJs.vm",
-//                    map, "templates");
-//            salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-//                    + nameProject + "-" + nameModule+"/Resources/js/bootstrap.min.js");
-//            salidatxt.println(writer.toString());
-//            writer = this.util.executeTemplate("angular.vm", map, "templates");
-//            salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-//                    + nameProject + "-" + nameModule + "/Resources/js/angular.min.js");
-//            salidatxt.println(writer.toString());
-            writer = this.util.executeTemplate("angularRoute.vm", map, "templates");
+    /**
+     * Método que crea la dependencia a angular
+     * @param nameModule, nombre del modulo
+     * @param nameProject, nombre de la base de datos
+     * @throws FileNotFoundException 
+     */
+    private void createAngularDependency(String nameModule, String nameProject)
+            throws FileNotFoundException {
+        Map<String, Object> map = new HashMap<>();
+        PrintStream salidatxt = null;
+        try {
+            StringWriter writer = this.util.executeTemplate("angular.vm", map, "templates");
+            salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
+                    + nameProject + "-" + nameModule + "/Resources/js/angular.min.js");
+            salidatxt.println(writer.toString());
+            map.clear();
+        } finally {
+            salidatxt.close();
+        }
+    }
+    
+    /**
+     * Método que crea la dependencia a angular
+     * @param nameModule, nombre del modulo
+     * @param nameProject, nombre de la base de datos
+     * @throws FileNotFoundException 
+     */
+    private void createAngularRouteDependency(String nameModule, String nameProject)
+            throws FileNotFoundException {
+        Map<String, Object> map = new HashMap<>();
+        PrintStream salidatxt = null;
+        try {
+            StringWriter writer = this.util.executeTemplate("angularRoute.vm", map, "templates");
             salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
                     + nameProject + "-" + nameModule + "/Resources/js/angular-route.min.js");
             salidatxt.println(writer.toString());
@@ -94,7 +152,7 @@ public class TemplateWebHTML {
             salidatxt.close();
         }
     }
-
+    
     /**
      * Método que crea el menu de la pagina web
      *
@@ -121,12 +179,14 @@ public class TemplateWebHTML {
         }
 
     }
+
     /**
      * Método que crea las páginas de cada modulo del proyecto que se genera
+     *
      * @param tables, lista de tablas de la base de datos
      * @param nameModule, nombre del modulo
      * @param nameProject, nombre de la base de datos
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
     public void createModulePageHTML(List<Table> tables, String nameModule, String nameProject)
             throws FileNotFoundException {
@@ -140,7 +200,7 @@ public class TemplateWebHTML {
                         executeTemplate("pageHTML.vm", map, "templates");
                 salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
                         + nameProject + "-" + nameModule
-                        + "/Views/"+table.getTableName()+".html");
+                        + "/Views/" + table.getTableName() + ".html");
                 salidatxt.println(writer.toString());
                 map.clear();
             } finally {
