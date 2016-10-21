@@ -11,6 +11,7 @@ import com.tlf.abstration.entities.Table;
 import com.tlf.abstration.reflection.Reflection;
 import com.tlf.logic.constant.Constant;
 import com.tlf.logic.execute.TemplateJSF;
+import com.tlf.logic.execute.TemplateWebHTML;
 import com.tlf.logic.execute.TempleteEJB;
 import com.tlf.logic.execute.TempleteJPA;
 import com.tlf.logic.folder.CreateFolder;
@@ -77,6 +78,8 @@ public class Controller {
 			 */
 			CreateFolder cf = new CreateFolder(this.util, path);
 			cf.createFolderPrincipalJSF(bd.getName());
+                        cf.createFolderWebPage(bd.getName());
+                        
 			/*
 			 * Creamos los archivos internos como son las clases, dao, etc
 			 */
@@ -105,6 +108,14 @@ public class Controller {
 			tJSF.createIndentificador(Constant.web.toString(), bd.getName());
 			tJSF.createServices(tables, Constant.web.toString(), bd.getName());
 
+                        /*
+                        Creamos los archivos de la pagina web
+                        */
+                        TemplateWebHTML tWeb= new TemplateWebHTML(this.util, path);
+                        tWeb.createIndexHTML(Constant.webPage.toString(), bd.getName());
+                        tWeb.crearteDependencies(Constant.webPage.toString(), bd.getName());
+                        tWeb.createMenu(tables, Constant.webPage.toString(), bd.getName());
+                        tWeb.createModulePageHTML(tables, Constant.webPage.toString(), bd.getName());
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} catch (FileNotFoundException ex) {
