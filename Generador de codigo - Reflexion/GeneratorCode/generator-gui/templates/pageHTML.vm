@@ -1,0 +1,27 @@
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+<div ng-controller="#nameType($table.tableName)Controller">
+    <h1>Área #nameType($table.tableName)</h1>
+    <hr>
+    <form role="form" id="form" name="form">
+        #foreach($column in $columns)
+        <div class="form-group" 
+             ng-class="{'has-error': form.${column.columnName}.$invalid,
+                    'has-success': form.${column.columnName}.$valid}">
+            <label for="$column.columnName">$column.columnName</label>
+            <input class="form-control" type="text" placeholder="$column.columnName" ng-model="$column.columnName">
+        </div>
+        #end   
+        <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">
+            Registrar
+        </button>
+        <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">
+            Buscar
+        </button>
+        <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">
+            Editar
+        </button>
+        <button class="btn btn-primary" type="submit" ng-disabled="form.$invalid">
+            Eliminar
+        </button>
+    </form>
+</div>

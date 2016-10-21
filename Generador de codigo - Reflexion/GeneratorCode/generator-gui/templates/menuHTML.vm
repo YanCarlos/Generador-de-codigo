@@ -1,0 +1,9 @@
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+        <li><a href="#/">Inicio</a></li>
+        #foreach($table in $tables)
+        <li><a href="#/#nameType($table.tableName)/">#nameType($table.tableName)</a></li>
+        #end
+    </ul>
+</div>
