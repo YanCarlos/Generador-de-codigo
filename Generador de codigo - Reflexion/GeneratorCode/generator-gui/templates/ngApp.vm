@@ -1,0 +1,16 @@
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+"use strict";
+var app = angular.module("app#nameType($name)", ['ngRoute']);
+
+app.config(function ($routeProvider) {
+    $routeProvider
+            #foreach($table in $tables)
+            .when('/#nameType($table.tableName)', {
+                controller: 'ctl#nameType($table.tableName)',
+                templateUrl: 'Views/#nameType($table.tableName).html'
+            })
+            #end
+            .otherwise({
+                redirectTo: '/'
+            });
+});
