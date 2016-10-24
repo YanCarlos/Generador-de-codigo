@@ -116,6 +116,8 @@ public class Controller {
                         tWeb.crearteDependencies(Constant.webPage.toString(), bd.getName());
                         tWeb.createMenu(tables, Constant.webPage.toString(), bd.getName());
                         tWeb.createModulePageHTML(tables, Constant.webPage.toString(), bd.getName());
+                        tWeb.createAngularApp(tables, Constant.webPage.toString(), bd.getName());
+                        tWeb.createAngularControllers(tables, Constant.webPage.toString(), bd.getName());
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} catch (FileNotFoundException ex) {

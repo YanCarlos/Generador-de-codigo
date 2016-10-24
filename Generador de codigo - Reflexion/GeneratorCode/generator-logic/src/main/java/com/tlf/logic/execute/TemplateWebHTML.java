@@ -64,7 +64,7 @@ public class TemplateWebHTML {
             throws FileNotFoundException {
         createBootstrapCssDependency(nameModule, nameProject);
         createJQueryDependency(nameModule, nameProject);
-        createAngularDependency(nameModule, nameProject);
+//        createAngularDependency(nameModule, nameProject);
         createAngularRouteDependency(nameModule, nameProject);
     }
     
@@ -200,7 +200,7 @@ public class TemplateWebHTML {
                         executeTemplate("pageHTML.vm", map, "templates");
                 salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
                         + nameProject + "-" + nameModule
-                        + "/Views/" + table.getTableName() + ".html");
+                        + "/Views/" + getNameClass(table.getTableName()) + ".html");
                 salidatxt.println(writer.toString());
                 map.clear();
             } finally {
@@ -209,7 +209,84 @@ public class TemplateWebHTML {
         }
 
     }
+    /**
+     * Método que crea la definicíon del ng-app de angular
+     * @param nameModule, nombre del modulo
+     * @param nameProject, nombre de la base de datos
+     * @throws FileNotFoundException 
+     */
+    public void createAngularApp(List<Table> tables,String nameModule, String nameProject) 
+            throws FileNotFoundException{
+        Map<String, Object> map = new HashMap<>();
+        PrintStream salidatxt = null;
+        try {
+            map.put("name", nameProject);
+            map.put("tables", tables);
+            StringWriter writer = this.util.
+                    executeTemplate("ngApp.vm", map, "templates");
+            salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
+                    + nameProject + "-" + nameModule
+                    + "/Resources/js/General/app.js");
+            salidatxt.println(writer.toString());
+            map.clear();
+        } finally {
+            salidatxt.close();
+        }
+    }
+    /**
+     * Método que crea los controladores de la pagina web
+     * @param tables, lista de tablas de la base de datos
+     * @param nameModule, nombre del modulo
+     * @param nameProject, nombre de la base de datos
+     * @throws FileNotFoundException 
+     */
+    public void createAngularControllers(List<Table> tables, String nameModule, String nameProject)
+            throws FileNotFoundException{
+        Map<String, Object> map = new HashMap<>();
+        PrintStream salidatxt = null;
+        for (Table table : tables) {
+            try {
+                map.put("table", table);
+                map.put("columns", table.getColumns());
+                StringWriter writer = this.util.
+                        executeTemplate("angularController.vm", map, "templates");
+                salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
+                        + nameProject + "-" + nameModule
+                        + "/Resources/js/Controllers/ctl"+getNameClass(table.getTableName())+".js");
+                salidatxt.println(writer.toString());
+                map.clear();
+            } finally {
+                salidatxt.close();
+            }
+        }
+    }
 
+    /* Método que crea los services de la pagina web
+     * @param tables, lista de tablas de la base de datos
+     * @param nameModule, nombre del modulo
+     * @param nameProject, nombre de la base de datos
+     * @throws FileNotFoundException 
+     */
+    public void createAngularServices(List<Table> tables, String nameModule, String nameProject)
+            throws FileNotFoundException{
+        Map<String, Object> map = new HashMap<>();
+        PrintStream salidatxt = null;
+        for (Table table : tables) {
+            try {
+                map.put("table", table);
+                map.put("columns", table.getColumns());
+                StringWriter writer = this.util.
+                        executeTemplate("angularService.vm", map, "templates");
+                salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
+                        + nameProject + "-" + nameModule
+                        + "/Resources/js/Services/ser"+getNameClass(table.getTableName())+".js");
+                salidatxt.println(writer.toString());
+                map.clear();
+            } finally {
+                salidatxt.close();
+            }
+        }
+    }
     /**
      * Metodo para nombre correctamente una clase con CamellCase
      *

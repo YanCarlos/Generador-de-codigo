@@ -43,6 +43,9 @@ public class CreateFolder {
         createFolder(path + "/"+ pathLocal);
         createFolder(this.path + "/" + pathLocal + "/Resources");
         createFolder(this.path + "/" + pathLocal + "/Resources/js");
+        createFolder(this.path+"/"+pathLocal+"/Resources/js/General");
+        createFolder(this.path+"/"+pathLocal+"/Resources/js/Controllers");
+        createFolder(this.path+"/"+pathLocal+"/Resources/js/Services");
         createFolder(this.path + "/" + pathLocal + "/Resources/css");
         createFolder(this.path + "/" + pathLocal + "/Views");
         createFolder(this.path + "/" + pathLocal + "/Views/Templates");
