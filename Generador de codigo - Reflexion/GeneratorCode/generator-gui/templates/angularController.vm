@@ -1,0 +1,7 @@
+#macro(nameType $name)$name.substring(0,1).toUpperCase()$name.substring(1).toLowerCase()#end
+"use strict";
+app.controller('ctl#nameType($table.tableName)', function ($scope, $window, ser#nameType($table.tableName)) {
+    #foreach($column in $columns)
+        $scope.$column.columnName;
+    #end
+}
