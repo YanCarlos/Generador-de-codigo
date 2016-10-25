@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>$name</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="Resources/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="Resources/js/jquery.min.js" type="text/javascript"></script>
+        <script src="Resources/js/angular.min.js" type="text/javascript"></script>
+        <script src="Resources/js/angular-route.js" type="text/javascript"></script>
+
+    </head>
+    <body ng-app="app$name">
+        <div ng-include="Views/Templates/menu.html"></div>
+        <div class="container">
+            <div ng-view></div>
+            Bienvenido a $name.
+        </div>
+    </body>
+</html>

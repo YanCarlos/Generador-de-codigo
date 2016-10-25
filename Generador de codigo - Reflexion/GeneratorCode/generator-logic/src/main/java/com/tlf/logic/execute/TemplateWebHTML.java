@@ -42,7 +42,7 @@ public class TemplateWebHTML {
         PrintStream salidatxt = null;
         try {
             map.put("name", nameProject);
-            StringWriter writer = this.util.executeTemplate("indexHTML.vm",
+            StringWriter writer = this.util.executeTemplate("indexHTMLPage.vm",
                     map, "templates");
             salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
                     + nameProject + "-" + nameModule + "/index.html");

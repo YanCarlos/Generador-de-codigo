@@ -78,8 +78,8 @@ public class Controller {
 			 */
 			CreateFolder cf = new CreateFolder(this.util, path);
 			cf.createFolderPrincipalJSF(bd.getName());
-                        cf.createFolderWebPage(bd.getName());
-                        
+			cf.createFolderWebPage(bd.getName());
+
 			/*
 			 * Creamos los archivos internos como son las clases, dao, etc
 			 */
@@ -108,16 +108,19 @@ public class Controller {
 			tJSF.createIndentificador(Constant.web.toString(), bd.getName());
 			tJSF.createServices(tables, Constant.web.toString(), bd.getName());
 
-                        /*
-                        Creamos los archivos de la pagina web
-                        */
-                        TemplateWebHTML tWeb= new TemplateWebHTML(this.util, path);
-                        tWeb.createIndexHTML(Constant.webPage.toString(), bd.getName());
-                        tWeb.crearteDependencies(Constant.webPage.toString(), bd.getName());
-                        tWeb.createMenu(tables, Constant.webPage.toString(), bd.getName());
-                        tWeb.createModulePageHTML(tables, Constant.webPage.toString(), bd.getName());
-                        tWeb.createAngularApp(tables, Constant.webPage.toString(), bd.getName());
-                        tWeb.createAngularControllers(tables, Constant.webPage.toString(), bd.getName());
+			/*
+			 * Creamos los archivos de la pagina web
+			 */
+			TemplateWebHTML tWeb = new TemplateWebHTML(this.util, path);
+			tWeb.createIndexHTML(Constant.webPage.toString(), bd.getName());
+			tWeb.crearteDependencies(Constant.webPage.toString(), bd.getName());
+			tWeb.createMenu(tables, Constant.webPage.toString(), bd.getName());
+			tWeb.createModulePageHTML(tables, Constant.webPage.toString(),
+					bd.getName());
+			tWeb.createAngularApp(tables, Constant.webPage.toString(),
+					bd.getName());
+			tWeb.createAngularControllers(tables, Constant.webPage.toString(),
+					bd.getName());
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} catch (FileNotFoundException ex) {
