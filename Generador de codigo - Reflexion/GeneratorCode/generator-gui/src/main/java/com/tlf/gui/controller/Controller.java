@@ -77,6 +77,7 @@ public class Controller {
 			 * Cremos las carpetas
 			 */
 			CreateFolder cf = new CreateFolder(this.util, path);
+			cf.createFolderProject(bd.getName());
 			cf.createFolderPrincipalJSF(bd.getName());
 			cf.createFolderWebPage(bd.getName());
 

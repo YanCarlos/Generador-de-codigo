@@ -53,7 +53,7 @@ public class TemplateJSF {
 				StringWriter writer = this.util.executeTemplate("bean.vm", map,
 						"templates");
 				salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-						+ nameProject + "-" + nameModule
+						+ nameProject + "/" + nameProject + "-" + nameModule
 						+ "/src/main/java/com/beans/"
 						+ getNameClass(table.getTableName()) + "Bean.java");
 				salidatxt.println(writer.toString());
@@ -72,7 +72,7 @@ public class TemplateJSF {
 			StringWriter writer = this.util.executeTemplate("indexHTML.vm",
 					map, "templates");
 			salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-					+ nameProject + "-" + nameModule
+					+ nameProject + "/" + nameProject + "-" + nameModule
 					+ "/src/main/webapp/index.html");
 			salidatxt.println(writer.toString());
 			map.clear();
@@ -90,7 +90,7 @@ public class TemplateJSF {
 			StringWriter writer = this.util.executeTemplate("indexXHTML.vm",
 					map, "templates");
 			salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-					+ nameProject + "-" + nameModule
+					+ nameProject + "/" + nameProject + "-" + nameModule
 					+ "/src/main/webapp/index.xhtml");
 			salidatxt.println(writer.toString());
 			map.clear();
@@ -99,8 +99,8 @@ public class TemplateJSF {
 		}
 	}
 
-	public void createIndexXHTMLPage(List<Table> tables,String nameModule, String nameProject)
-			throws FileNotFoundException {
+	public void createIndexXHTMLPage(List<Table> tables, String nameModule,
+			String nameProject) throws FileNotFoundException {
 		Map<String, Object> map = new HashMap<>();
 		PrintStream salidatxt = null;
 		for (Table table : tables) {
@@ -109,8 +109,9 @@ public class TemplateJSF {
 				StringWriter writer = this.util.executeTemplate(
 						"indexXHTMLPage.vm", map, "templates");
 				salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-						+ nameProject + "-" + nameModule
-						+ "/src/main/webapp/templates/"+table.getTableName()+".xhtml");
+						+ nameProject + "/" + nameProject + "-" + nameModule
+						+ "/src/main/webapp/templates/" + table.getTableName()
+						+ ".xhtml");
 				salidatxt.println(writer.toString());
 				map.clear();
 			} finally {
@@ -127,7 +128,7 @@ public class TemplateJSF {
 			StringWriter writer = this.util.executeTemplate("beansXml.vm", map,
 					"templates");
 			salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-					+ nameProject + "-" + nameModule
+					+ nameProject + "/" + nameProject + "-" + nameModule
 					+ "/src/main/webapp/WEB-INF/beans.xml");
 			salidatxt.println(writer.toString());
 			map.clear();
@@ -144,7 +145,7 @@ public class TemplateJSF {
 			StringWriter writer = this.util.executeTemplate("facesConfig.vm",
 					map, "templates");
 			salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-					+ nameProject + "-" + nameModule
+					+ nameProject + "/" + nameProject + "-" + nameModule
 					+ "/src/main/webapp/WEB-INF/faces-config.xml");
 			salidatxt.println(writer.toString());
 			map.clear();
@@ -152,7 +153,7 @@ public class TemplateJSF {
 			salidatxt.close();
 		}
 	}
-	
+
 	public void createExponerRest(String nameModule, String nameProject)
 			throws FileNotFoundException {
 		Map<String, Object> map = new HashMap<>();
@@ -161,7 +162,7 @@ public class TemplateJSF {
 			StringWriter writer = this.util.executeTemplate("exponer.vm", map,
 					"templates");
 			salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-					+ nameProject + "-" + nameModule
+					+ nameProject + "/" + nameProject + "-" + nameModule
 					+ "/src/main/java/com/rest/Expone.java");
 			salidatxt.println(writer.toString());
 			map.clear();
@@ -169,7 +170,7 @@ public class TemplateJSF {
 			salidatxt.close();
 		}
 	}
-	
+
 	public void createIndentificador(String nameModule, String nameProject)
 			throws FileNotFoundException {
 		Map<String, Object> map = new HashMap<>();
@@ -178,7 +179,7 @@ public class TemplateJSF {
 			StringWriter writer = this.util.executeTemplate("idRest.vm", map,
 					"templates");
 			salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-					+ nameProject + "-" + nameModule
+					+ nameProject + "/" + nameProject + "-" + nameModule
 					+ "/src/main/java/com/rest/Identificador.java");
 			salidatxt.println(writer.toString());
 			map.clear();
@@ -186,19 +187,20 @@ public class TemplateJSF {
 			salidatxt.close();
 		}
 	}
-	
-	public void createServices(List<Table> tables,String nameModule, String nameProject)
-			throws FileNotFoundException {
+
+	public void createServices(List<Table> tables, String nameModule,
+			String nameProject) throws FileNotFoundException {
 		Map<String, Object> map = new HashMap<>();
 		PrintStream salidatxt = null;
 		for (Table table : tables) {
 			try {
 				map.put("table", table);
-				StringWriter writer = this.util.executeTemplate(
-						"rest.vm", map, "templates");
+				StringWriter writer = this.util.executeTemplate("rest.vm", map,
+						"templates");
 				salidatxt = new PrintStream(this.path + "/" + nameProject + "/"
-						+ nameProject + "-" + nameModule
-						+ "/src/main/java/com/services/"+getNameClass(table.getTableName())+"Service.java");
+						+ nameProject + "/" + nameProject + "-" + nameModule
+						+ "/src/main/java/com/services/"
+						+ getNameClass(table.getTableName()) + "Service.java");
 				salidatxt.println(writer.toString());
 				map.clear();
 			} finally {
